@@ -9,4 +9,8 @@ class MiscUtils {
     return List.generate(size, (index) => _chars[r.nextInt(_chars.length)])
         .join();
   }
+
+  static int findPercentageOfTwoNumbers(int small, int big) {
+    return ((1 - (small / big)) * 100).round();
+  }
 }
