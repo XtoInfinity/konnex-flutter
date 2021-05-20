@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "518323291682",
+    "project_id": "konnex-d49f8",
+    "storage_bucket": "konnex-d49f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:518323291682:android:a06a97eb05a6ab91f36c7b",
+        "android_client_info": {
+          "package_name": "dev.xti.konnex_aerothon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "518323291682-0eov0a55rr0eup14jobur9tvgf1a4v2f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.xti.konnex_aerothon",
+            "certificate_hash": "781939aa12719b077f6e8d7df43a35e92a23bbfa"
+          }
+        },
+        {
+          "client_id": "518323291682-nep40faqb07u4vlb1emsnd97f7ndoase.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqWE1-3xKrp7rusE2ehMK9l_aEpa8m3OI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "518323291682-nep40faqb07u4vlb1emsnd97f7ndoase.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:konnex_aerothon/screens/messaging/message_screen.dart';
+import 'package:konnex_aerothon/screens/report/report_screen.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -92,9 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         alignment: WrapAlignment.start,
         children: [
           getChip(
-              "Chat with expert", Icons.message, () => Get.to(MessageScreen())),
-          getChip("Change Language", MdiIcons.alphabeticalVariant, () => {}),
-          getChip("Report a bug", MdiIcons.bug, () => {}),
+              "Get Help", Icons.help_outline, () => Get.to(MessageScreen())),
         ],
       ),
     );
