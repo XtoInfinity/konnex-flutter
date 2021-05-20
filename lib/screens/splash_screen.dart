@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -14,20 +15,21 @@ class _SplashScreenState extends State<SplashScreen> {
   GetStorage box = GetStorage();
 
   getData() async {
-    if (!box.hasData("userId")) {
-      String id = MiscUtils.getRandomId(12);
-      box.write("userId", id);
-      await FirebaseFirestore.instance.collection("user").doc(id).set({
-        "userId": id,
-        "createdAt": Timestamp.now(),
-      });
+    FirebaseAuth auth = FirebaseAuth.instance;
+    if (auth.currentUser == null) {
+      UserCredential userCredential = await auth.signInAnonymously();
+      box.write("userId", userCredential.user.uid);
+      await FirebaseFirestore.instance
+          .collection("user")
+          .doc(userCredential.user.uid)
+          .set({"createdAt": Timestamp.now(), "updatedAt": Timestamp.now()});
     }
     String id = box.read("userId");
 
-    await FirebaseFirestore.instance.collection("user").doc(id).set({
+    await FirebaseFirestore.instance.collection("user").doc(id).update({
       "updatedAt": Timestamp.now(),
     });
-    Get.to(DashboardScreen());
+    Get.offAll(DashboardScreen());
   }
 
   @override

@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       defaultTransition: Transition.cupertino,
-      home: MessageScreen(),
+      home: SplashScreen(),
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:konnex_aerothon/models/message.dart';
 import 'package:konnex_aerothon/services/messaging_service.dart';
 import 'package:konnex_aerothon/utils/misc_utils.dart';
+import 'package:konnex_aerothon/widgets/loading.dart';
 
 class MessageScreen extends StatefulWidget {
   @override
@@ -136,15 +137,20 @@ class _MessageScreenState extends State<MessageScreen> {
                     .collection("messaging")
                     .snapshots(),
                 builder: (context, snapshot) {
-                  messagingService.getAllMessage(snapshot, messages);
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: messages.length,
-                    reverse: true,
-                    itemBuilder: (context, index) {
-                      return _MessageBubble(message: messages.toList()[index]);
-                    },
-                  );
+                  if (snapshot.hasData) {
+                    messagingService.getAllMessage(snapshot, messages);
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: messages.length,
+                      reverse: true,
+                      itemBuilder: (context, index) {
+                        return _MessageBubble(
+                            message: messages.toList()[index]);
+                      },
+                    );
+                  } else {
+                    return CustomLoading();
+                  }
                 },
               ),
             ),
