@@ -6,18 +6,6 @@ part of 'instruction.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Instruction _$InstructionFromJson(Map<String, dynamic> json) {
-  return Instruction(
-    description: json['description'] as String,
-    waitInMils: json['waitInMils'] as int,
-  );
-}
-
-Map<String, dynamic> _$InstructionToJson(Instruction instance) =>
-    <String, dynamic>{
-      'description': instance.description,
-      'waitInMils': instance.waitInMils,
-    };
 
 InstructionById _$InstructionByIdFromJson(Map<String, dynamic> json) {
   return InstructionById(

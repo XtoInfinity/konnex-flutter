@@ -6,15 +6,24 @@ part of 'instruction_set.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-InstructionSet _$InstructionSetFromJson(Map<String, dynamic> json) {
-  return InstructionSet(
-    uniqueRouteName: json['uniqueRouteName'] as String,
-    instructions: (json['instructions'] as List)
-        ?.map((e) =>
-            e == null ? null : Instruction.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+NavigationObject _$NavigationObjectFromJson(Map<String, dynamic> json) {
+  return NavigationObject(
+    title: json['title'] as String,
+    steps: (json['steps'] as List)
+            ?.map((e) => e == null
+                ? null
+                : InstructionSet.fromJson(e as Map<String, dynamic>))
+            ?.toList() ??
+        [],
   );
 }
+
+Map<String, dynamic> _$NavigationObjectToJson(NavigationObject instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+      'steps': instance.steps?.map((e) => e?.toJson())?.toList(),
+    };
+
 
 Map<String, dynamic> _$InstructionSetToJson(InstructionSet instance) =>
     <String, dynamic>{

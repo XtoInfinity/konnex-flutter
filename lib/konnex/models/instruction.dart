@@ -2,8 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'instruction.g.dart';
 
-@JsonSerializable(explicitToJson: true)
-class Instruction {
+abstract class Instruction {
   /// Desription to the instruction
   String description;
 
@@ -13,9 +12,7 @@ class Instruction {
   Instruction({this.description, int waitInMils})
       : this.waitInMils = waitInMils ?? 1500;
 
-  factory Instruction.fromJson(Map<String, dynamic> json) =>
-      _$InstructionFromJson(json);
-  Map<String, dynamic> toJson() => _$InstructionToJson(this);
+  Map<String, dynamic> toJson();
 }
 
 @JsonSerializable(explicitToJson: true)

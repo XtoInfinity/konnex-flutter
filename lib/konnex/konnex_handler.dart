@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:konnex_aerothon/util/log_util.dart';
 import 'package:render_metrics/render_metrics.dart';
@@ -5,7 +6,7 @@ import 'package:render_metrics/render_metrics.dart';
 import 'models/instruction.dart';
 import 'models/instruction_set.dart';
 
-part 'overlay_screen.dart';
+part 'tool_tip_overlay.dart';
 
 class KonnexHandler {
   static KonnexHandler instance = KonnexHandler._();
@@ -14,7 +15,11 @@ class KonnexHandler {
 
   RenderParametersManager get manager => this._renderManager;
 
-  KonnexHandler._();
+  List<NavigationObject> _navObjects;
+
+  KonnexHandler._() {
+    this.fetchAllNavigationOjects();
+  }
 
   List<InstructionSet> _currInstructionSet = [];
 
@@ -48,9 +53,9 @@ class KonnexHandler {
         RenderData data = _renderManager.getRenderData(instruction.id);
         if (data == null) {
           LogUtil.instance
-              ?.log('instruction id not present: ${instruction.toString()}');
+              ?.log('Instruction id not present: ${instruction.toString()}');
         }
-        await Navigator.of(context).push(_OverlayScreen(
+        await Navigator.of(context).push(_ToolTipOverlay(
           data.xCenter,
           data.yCenter - topPadding,
           Duration(milliseconds: instruction.waitInMils),
@@ -58,10 +63,33 @@ class KonnexHandler {
           size: 20,
         ));
       } else if (instruction is InstructionByCoordinate) {
+        await Navigator.of(context).push(_ToolTipOverlay(
+          instruction.x,
+          instruction.y - topPadding,
+          Duration(milliseconds: instruction.waitInMils),
+          color: Colors.red,
+          size: 20,
+        ));
       } else {
         throw UnimplementedError();
       }
     }
     this._currInstructionSet.removeAt(0);
+  }
+
+  /// Returns all the navigation objects for this particular screen
+  Future<List<NavigationObject>> fetchAllNavigationOjects() async {
+    if (this._navObjects != null) return this._navObjects;
+    final String appId = 'pa5309JvtnfFLqwNCJr5';
+    final snapshot = await FirebaseFirestore.instance
+        .collection('application/$appId/navigations/')
+        .get();
+    this._navObjects = snapshot?.docs?.map((doc) {
+      final json = doc.data();
+      return NavigationObject.fromJson(json);
+    })?.toList();
+    this._navObjects?.removeWhere((element) => element == null);
+    print("${this._navObjects.toString()}");
+    return this._navObjects;
   }
 }

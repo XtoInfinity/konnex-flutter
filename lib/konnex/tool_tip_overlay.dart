@@ -1,12 +1,12 @@
 part of 'konnex_handler.dart';
 
-class _OverlayScreen extends ModalRoute<void> {
+class _ToolTipOverlay extends ModalRoute<void> {
   final double x;
   final double y;
   final Duration wait;
   final double size;
   final Color color;
-  _OverlayScreen(
+  _ToolTipOverlay(
     this.x,
     this.y,
     this.wait, {
