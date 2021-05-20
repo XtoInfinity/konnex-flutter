@@ -1,8 +1,12 @@
 import 'package:bubble/bubble.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:konnex_aerothon/models/message.dart';
+import 'package:konnex_aerothon/services/messaging_service.dart';
+import 'package:konnex_aerothon/utils/misc_utils.dart';
 
 class MessageScreen extends StatefulWidget {
   @override
@@ -11,6 +15,7 @@ class MessageScreen extends StatefulWidget {
 
 class _MessageScreenState extends State<MessageScreen> {
   TextEditingController _messageController;
+  MessagingService messagingService = MessagingService();
 
   @override
   void initState() {
@@ -24,14 +29,7 @@ class _MessageScreenState extends State<MessageScreen> {
     super.dispose();
   }
 
-  List messages = [
-    {"message": "I have some issues when pressing back button", "sender": 0},
-    {
-      "message":
-          "Please enter your problem in detail so that we can understand properly.",
-      "sender": 1
-    }
-  ];
+  List<Message> messages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +52,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   controller: _messageController,
                   style: TextStyle(fontSize: 16.0),
                   maxLines: 1,
+                  textCapitalization: TextCapitalization.sentences,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -63,7 +62,14 @@ class _MessageScreenState extends State<MessageScreen> {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                String text = _messageController.text;
+                if (text.length > 0) {
+                  messagingService.addMessage(text, messages);
+                  _messageController.clear();
+                  setState(() {});
+                }
+              },
               child: Container(
                 height: Get.height * 0.07,
                 width: Get.height * 0.07,
@@ -125,13 +131,20 @@ class _MessageScreenState extends State<MessageScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: messages.length,
-                reverse: true,
-                itemBuilder: (context, index) {
-                  return _MessageBubble(
-                      message: messages.reversed.toList()[index]);
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("messaging")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  messagingService.getAllMessage(snapshot, messages);
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: messages.length,
+                    reverse: true,
+                    itemBuilder: (context, index) {
+                      return _MessageBubble(message: messages.toList()[index]);
+                    },
+                  );
                 },
               ),
             ),
@@ -144,35 +157,35 @@ class _MessageScreenState extends State<MessageScreen> {
 }
 
 class _MessageBubble extends StatelessWidget {
-  final Map message;
+  final Message message;
 
   _MessageBubble({Key key, @required this.message}) : super(key: key);
-  GetStorage box = GetStorage();
   @override
   Widget build(BuildContext context) {
     return Bubble(
       margin: BubbleEdges.only(top: 20.0),
       alignment:
-          0 == message['sender'] ? Alignment.topRight : Alignment.topLeft,
+          "user" == message.sentBy ? Alignment.topRight : Alignment.topLeft,
       nipWidth: 12.0,
       nipHeight: 16.0,
-      nip:
-          0 == message['sender'] ? BubbleNip.rightBottom : BubbleNip.leftBottom,
-      color: 0 == message['sender']
+      nip: "user" == message.sentBy
+          ? BubbleNip.rightBottom
+          : BubbleNip.leftBottom,
+      color: "user" == message.sentBy
           ? Get.theme.primaryColor
           : Get.theme.accentColor,
       padding: BubbleEdges.all(12.0),
       child: Container(
         constraints: BoxConstraints(maxWidth: Get.width * 0.7),
         child: Column(
-          crossAxisAlignment: 0 == message['sender']
+          crossAxisAlignment: "user" == message.sentBy
               ? CrossAxisAlignment.end
               : CrossAxisAlignment.start,
           children: [
             Text(
-              message['message'],
+              message.message,
               textAlign:
-                  0 == message['sender'] ? TextAlign.right : TextAlign.left,
+                  "user" == message.sentBy ? TextAlign.right : TextAlign.left,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16.0,

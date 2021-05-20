@@ -2,7 +2,9 @@
     package="dev.xti.konnex_aerothon">
    <application
         android:label="konnex_aerothon"
-        android:icon="@mipmap/ic_launcher">
+       android:usesCleartextTraffic="true"
+
+       android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
