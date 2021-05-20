@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/screens/dashboard_screen.dart';
+import 'package:konnex_aerothon/screens/help/help_screen.dart';
 import 'package:konnex_aerothon/screens/messaging/message_screen.dart';
 import 'package:konnex_aerothon/screens/splash_screen.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Konnex Aerothon',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xffF4ECF7),
+        scaffoldBackgroundColor: Colors.white,
         primaryColor: Color(0xff5B2C6F),
         accentColor: Color(0xffF1C40F),
         appBarTheme: AppBarTheme(
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       defaultTransition: Transition.cupertino,
-      home: SplashScreen(),
+      home: HelpScreen(),
     );
   }
 }

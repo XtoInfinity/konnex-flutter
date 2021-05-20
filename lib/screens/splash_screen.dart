@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/screens/dashboard_screen.dart';
-import 'package:konnex_aerothon/utils/misc_utils.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -16,6 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   getData() async {
     FirebaseAuth auth = FirebaseAuth.instance;
+    box.write("appId", "b9RdbkE3hCvpjyw9S2PQ");
     if (auth.currentUser == null) {
       UserCredential userCredential = await auth.signInAnonymously();
       box.write("userId", userCredential.user.uid);

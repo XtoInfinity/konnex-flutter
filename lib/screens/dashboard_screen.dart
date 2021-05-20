@@ -93,10 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         alignment: WrapAlignment.start,
         children: [
           getChip(
-              "Chat with expert", Icons.message, () => Get.to(MessageScreen())),
-          getChip("Change Language", MdiIcons.alphabeticalVariant,
-              () => {Get.to(ReportScreen())}),
-          getChip("Report a bug", MdiIcons.bug, () => {}),
+              "Get Help", Icons.help_outline, () => Get.to(MessageScreen())),
         ],
       ),
     );
