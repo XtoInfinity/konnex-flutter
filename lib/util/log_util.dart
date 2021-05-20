@@ -13,14 +13,14 @@ class LogUtil {
   static LogUtil instance;
 
   /// Holds the content of the log file
-  String logContents;
+  String _logContents;
 
   /// Holds the fileinstance of log konnex is maintaining
   File _logFile;
 
   /// Constructor to initialise directory
   LogUtil._(this._logFile) {
-    this.logContents = this._logFile.readAsStringSync() ?? '';
+    this._logContents = this._logFile.readAsStringSync() ?? '';
   }
 
   static Future<LogUtil> ensureInitialised() async {
@@ -54,9 +54,9 @@ class LogUtil {
     String logStr = '${currTime.toString()}: ${logType ?? 'Normal'} : $log\n';
     print(logStr);
     // Add String to the log contents
-    this.logContents += logStr;
+    this._logContents += logStr;
     // Write the content to the file.
-    return file.writeAsString(this.logContents);
+    return file.writeAsString(this._logContents);
   }
 
   //TODO build this method
