@@ -2,6 +2,7 @@ import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:konnex_aerothon/screens/help/help_screen.dart';
 import 'package:konnex_aerothon/screens/messaging/message_screen.dart';
 import 'package:konnex_aerothon/screens/report/report_screen.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -92,8 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         runSpacing: 5,
         alignment: WrapAlignment.start,
         children: [
-          getChip(
-              "Get Help", Icons.help_outline, () => Get.to(MessageScreen())),
+          getChip("Get Help", Icons.help_outline, () => Get.to(HelpScreen())),
         ],
       ),
     );

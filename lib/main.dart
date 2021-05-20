@@ -1,17 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/screens/dashboard_screen.dart';
+import 'package:konnex_aerothon/screens/help/feedback_screen.dart';
 import 'package:konnex_aerothon/screens/help/help_screen.dart';
 import 'package:konnex_aerothon/screens/messaging/message_screen.dart';
+import 'package:konnex_aerothon/screens/report/report_screen.dart';
 import 'package:konnex_aerothon/screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
-
   runApp(MyApp());
 }
 
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       defaultTransition: Transition.cupertino,
-      home: HelpScreen(),
+      home: SplashScreen(),
     );
   }
 }
