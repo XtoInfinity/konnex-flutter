@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/konnex/models/poll.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 
 class PlayScreen extends StatefulWidget {
+  static const String routeName = '/PlayScreen';
   @override
   _PlayScreenState createState() => _PlayScreenState();
 }
@@ -88,7 +89,8 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    LogUtil.instance.log(PlayScreen.routeName, LogType.open_screen,
+        'Opened ${PlayScreen.routeName}');
     super.initState();
     getAllPolls();
   }

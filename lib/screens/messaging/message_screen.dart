@@ -2,14 +2,14 @@ import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:konnex_aerothon/models/message.dart';
 import 'package:konnex_aerothon/services/messaging_service.dart';
-import 'package:konnex_aerothon/utils/misc_utils.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 
 class MessageScreen extends StatefulWidget {
+  static const String routeName = '/MessageScreen';
   @override
   _MessageScreenState createState() => _MessageScreenState();
 }
@@ -20,6 +20,8 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   void initState() {
+    LogUtil.instance.log(MessageScreen.routeName, LogType.open_screen,
+        'Opened ${MessageScreen.routeName}');
     super.initState();
     _messageController = TextEditingController();
   }

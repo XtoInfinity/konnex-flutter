@@ -10,9 +10,11 @@ import 'package:konnex_aerothon/screens/help/article_screen.dart';
 import 'package:konnex_aerothon/screens/messaging/message_screen.dart';
 import 'package:konnex_aerothon/screens/report/report_screen.dart';
 import 'package:konnex_aerothon/services/help_service.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/utils/speech_overlay.dart';
 
 class HelpScreen extends StatefulWidget {
+  static const String routeName = '/HelpScreen';
   @override
   _HelpScreenState createState() => _HelpScreenState();
 }
@@ -115,6 +117,12 @@ class _HelpScreenState extends State<HelpScreen> {
         ),
       ),
     );
+  }
+
+  initState() {
+    LogUtil.instance.log(HelpScreen.routeName, LogType.open_screen,
+        'Opened ${HelpScreen.routeName}');
+    super.initState();
   }
 
   @override

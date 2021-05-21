@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:konnex_aerothon/screens/misc/done_screen.dart';
 import 'package:konnex_aerothon/services/help_service.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/widgets/bottom_button.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 import 'package:lottie/lottie.dart';
 
 class FeedbackScreen extends StatefulWidget {
+  static const String routeName = '/FeedbackScreen';
   @override
   _FeedbackScreenState createState() => _FeedbackScreenState();
 }
@@ -31,6 +33,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     } else {
       Get.rawSnackbar(message: "Please enter all details");
     }
+  }
+
+  @override
+  void initState() {
+    LogUtil.instance.log(FeedbackScreen.routeName, LogType.open_screen,
+        'Opened ${FeedbackScreen.routeName}');
+    super.initState();
   }
 
   @override

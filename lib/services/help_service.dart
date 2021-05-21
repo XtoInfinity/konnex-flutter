@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/models/announcement.dart';
 import 'package:konnex_aerothon/models/article.dart';
-import 'package:konnex_aerothon/models/message.dart';
 import 'package:konnex_aerothon/utils/classifier.dart';
 
 class HelpService {

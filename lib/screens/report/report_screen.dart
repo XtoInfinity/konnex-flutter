@@ -1,17 +1,18 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:konnex_aerothon/screens/misc/done_screen.dart';
 import 'package:konnex_aerothon/services/help_service.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/widgets/bottom_button.dart';
 import 'package:konnex_aerothon/widgets/dialog.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 
 class ReportScreen extends StatefulWidget {
+  static const String routeName = '/ReportScreen';
   @override
   _ReportScreenState createState() => _ReportScreenState();
 }
@@ -204,6 +205,12 @@ class _ReportScreenState extends State<ReportScreen> {
     } else {
       Get.rawSnackbar(message: "Please enter all details");
     }
+  }
+
+  initState() {
+    LogUtil.instance.log(ReportScreen.routeName, LogType.open_screen,
+        'Opened ${ReportScreen.routeName}');
+    super.initState();
   }
 
   @override
