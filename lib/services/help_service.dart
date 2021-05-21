@@ -55,7 +55,8 @@ class HelpService {
       "subCategory": subCategory,
       "message": message,
       "createdAt": Timestamp.now(),
-      "images": urls
+      "images": urls,
+      "status": "Open",
     });
   }
 

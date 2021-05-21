@@ -147,9 +147,22 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
         runSpacing: 5,
         alignment: WrapAlignment.start,
         children: [
-          _getChip("Get Help", Icons.help_outline, () => Get.to(HelpScreen())),
-          _getChip("Play & Win", Icons.group_work_outlined,
-              () => Get.to(PlayScreen())),
+          _getChip(
+            "Get Help",
+            Icons.help_outline,
+            () {
+              Navigator.of(context).pop();
+              Get.to(HelpScreen());
+            },
+          ),
+          _getChip(
+            "Play & Win",
+            Icons.group_work_outlined,
+            () {
+              Navigator.of(context).pop();
+              Get.to(PlayScreen());
+            },
+          ),
         ],
       ),
     );
