@@ -32,7 +32,8 @@ class _KonnexWidgetState extends State<KonnexWidget> {
   @override
   void initState() {
     this.isOpen = false;
-    LogUtil.instance.log('Opened ${this.widget.currentRoute}');
+    LogUtil.instance.log(this.widget.currentRoute, LogType.open_screen,
+        'Opened ${this.widget.currentRoute}');
     super.initState();
   }
 

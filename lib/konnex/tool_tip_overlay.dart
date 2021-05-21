@@ -165,7 +165,8 @@ class _DescriptionWidgetState extends State<DescriptionWidget> {
     });
 
     flutterTts.setErrorHandler((msg) {
-      LogUtil.instance.log('Failed TTS: ${msg.toString()}');
+      LogUtil.instance
+          .log('konnex', LogType.error, 'Failed TTS: ${msg.toString()}');
       this.widget.onCancel?.call();
     });
 

@@ -127,7 +127,9 @@ class ProductsScreen extends StatelessWidget {
                                         catalogProvider
                                             .addItemToCart(product.cpId);
                                         LogUtil.instance.log(
-                                            'Added product to cart ${product.officialId}');
+                                            routeName,
+                                            LogType.add_to_cart,
+                                            '${product.officialId}');
                                       },
                                       child: Text("Add to Cart"),
                                     ),

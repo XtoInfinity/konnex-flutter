@@ -1,13 +1,22 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_storage/get_storage.dart';
 
-/// Class Log Util
-///
-/// Created to log a interaction
+enum LogType {
+  navigation,
+  open_screen,
+  order_item,
+  search_navigation,
+  add_address,
+  toggle_address,
+  alter_quantity,
+  add_to_cart,
+  remove_from_cart,
+  error,
+}
+
 class LogUtil {
   /// Contains the instance
   ///
@@ -17,7 +26,8 @@ class LogUtil {
   /// Constructor to initialise
   LogUtil._();
 
-  Future<void> log(String log, [String logType = 'Normal']) async {
+  Future<void> log(String routeName, LogType logType, String log,
+      [String logLevel = 'Normal']) async {
     String appId = GetStorage().read('appId');
     final userId = FirebaseAuth.instance.currentUser.uid;
     // Get the time of logging
@@ -25,9 +35,11 @@ class LogUtil {
     final ref =
         FirebaseFirestore.instance.collection('application/$appId/logs');
     ref.doc().set({
+      'level': logLevel,
       'log': log,
       'time': currTime,
-      'type': logType,
+      'type': logType.toString().split('.').last,
+      'screen': routeName,
       'userId': userId,
     });
   }

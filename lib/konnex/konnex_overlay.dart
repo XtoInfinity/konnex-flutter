@@ -79,8 +79,8 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
                 child: _NavigationOptionWidget(
                   filter: controller.text,
                   onNavigatePressed: (navigation) async {
-                    LogUtil.instance
-                        .log('Navigation guide for ${navigation.title}');
+                    LogUtil.instance.log('konnex', LogType.navigation,
+                        'Navigation for ${navigation.title}');
                     Navigator.of(context).pop();
                     KonnexHandler.instance.startToolTipNavigation(
                         this.widget.routeName, navigation.steps.toList());
@@ -202,7 +202,8 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
             );
             if (textFromSpeech != null) {
               controller.text = textFromSpeech;
-              LogUtil.instance.log('Searched Nav for $textFromSpeech');
+              LogUtil.instance
+                  .log('konnex', LogType.search_navigation, '$textFromSpeech');
               setState(() {});
             }
           },

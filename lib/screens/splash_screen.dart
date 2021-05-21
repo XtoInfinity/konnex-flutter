@@ -10,8 +10,10 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   GetStorage box = GetStorage();
+  AnimationController _controller;
 
   getData() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -36,18 +38,43 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    this._controller = AnimationController(
+      vsync: this,
+      lowerBound: 0.5,
+      duration: Duration(seconds: 1),
+    )..repeat();
     getData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Icon(
-          Icons.wifi_tethering,
-          color: Theme.of(context).primaryColor,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: AnimatedBuilder(
+          animation: CurvedAnimation(
+              parent: this._controller, curve: Curves.fastOutSlowIn),
+          builder: (context, child) {
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                Icon(
+                  Icons.wifi_tethering,
+                  color: Theme.of(context).primaryColor,
+                  size: 70 * this._controller.value,
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
+  }
+
+  @override
+  dispose() {
+    this._controller.dispose();
+    super.dispose();
   }
 }

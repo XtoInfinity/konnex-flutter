@@ -31,7 +31,6 @@ class CategoryScreen extends StatelessWidget {
             catalogProvider.clearData();
             catalogProvider.selectedCategoryIndex = index;
             Get.to(() => ProductsScreen(), transition: Transition.rightToLeft);
-            LogUtil.instance.log('Selected ${category.ccName}');
           },
           child: Column(
             children: [

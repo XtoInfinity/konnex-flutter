@@ -56,14 +56,15 @@ class KonnexHandler {
     for (var i = 0; i < firstSet.length; i++) {
       final instruction = firstSet.elementAt(i);
       if (instruction == null) {
-        LogUtil.instance.log('instruction null: ${instruction.toString()}');
+        LogUtil.instance.log('konnex', LogType.error,
+            'instruction null: ${instruction.toString()}');
         continue;
       }
       if (instruction is InstructionById) {
         RenderData data = _renderManager.getRenderData(instruction.id);
         if (data == null) {
-          LogUtil.instance
-              ?.log('Instruction id not present: ${instruction.toString()}');
+          LogUtil.instance?.log('konnex', LogType.error,
+              'Instruction id not present: ${instruction.toString()}');
         }
         await Navigator.of(context).push(_ToolTipOverlay(
           data.xCenter,
