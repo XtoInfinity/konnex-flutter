@@ -51,7 +51,8 @@ class _ToolTipOverlay extends ModalRoute<void> {
   }
 
   Widget _buildOverlayContent(BuildContext context) {
-    this.popAfterWait(context);
+    // Only pop after wait if no description
+    if (this.description.isEmpty) this.popAfterWait(context);
     final h = MediaQuery.of(context).size.height / 2;
     double descriptionTop;
     if (y < h) {
@@ -70,27 +71,18 @@ class _ToolTipOverlay extends ModalRoute<void> {
             borderColor: this.color,
           ),
         ),
-        if(this.description.isNotEmpty) Positioned(
-          left: 0,
-          right: 0,
-          top: descriptionTop,
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.black,
-                ),
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  this.description,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
+        if (this.description.isNotEmpty)
+          Positioned(
+            left: 0,
+            right: 0,
+            top: descriptionTop,
+            child: DescriptionWidget(
+              description: description,
+              onCancel: () {
+                this.popAfterWait(context);
+              },
+            ),
           ),
-        ),
       ],
     );
   }
@@ -114,6 +106,71 @@ class _ToolTipOverlay extends ModalRoute<void> {
       if (this.isCurrent) {
         Navigator.of(context).pop();
       }
+    });
+  }
+}
+
+class DescriptionWidget extends StatefulWidget {
+  const DescriptionWidget({
+    Key key,
+    @required this.description,
+    this.onCancel,
+  }) : super(key: key);
+
+  final VoidCallback onCancel;
+  final String description;
+
+  @override
+  _DescriptionWidgetState createState() => _DescriptionWidgetState();
+}
+
+class _DescriptionWidgetState extends State<DescriptionWidget> {
+  final flutterTts = FlutterTts();
+
+  initState() {
+    setupHandler();
+    _speak();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.black,
+          ),
+          padding: EdgeInsets.all(10),
+          child: Text(
+            this.widget.description,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future _speak() async {
+    await flutterTts.speak(this.widget.description);
+  }
+
+  void setupHandler() {
+    flutterTts.setStartHandler(() {});
+
+    flutterTts.setCompletionHandler(() {
+      if (this.mounted) Navigator.of(context).pop();
+    });
+
+    flutterTts.setErrorHandler((msg) {
+      LogUtil.instance.log('Failed TTS: ${msg.toString()}');
+      this.widget.onCancel?.call();
+    });
+
+    flutterTts.setCancelHandler(() {
+      this.widget.onCancel?.call();
     });
   }
 }

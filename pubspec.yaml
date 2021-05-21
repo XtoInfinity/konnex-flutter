@@ -39,6 +39,7 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   flutter_spinkit: null
   flutter_staggered_animations: ^1.0.0
+  flutter_tts: ^3.1.0
   get: ^3.26.0
   get_storage: null
   highlight_text: ^0.7.2
