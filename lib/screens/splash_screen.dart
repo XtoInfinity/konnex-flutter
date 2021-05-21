@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:konnex_aerothon/screens/catalog/category_screen.dart';
 import 'package:konnex_aerothon/screens/dashboard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await FirebaseFirestore.instance.collection("user").doc(id).update({
       "updatedAt": Timestamp.now(),
     });
-    Get.offAll(DashboardScreen());
+    Get.offAll(CategoryScreen());
   }
 
   @override

@@ -51,6 +51,7 @@ dependencies:
   carousel_pro:
   photo_view:
   badges: ^1.2.0
+  tflite_flutter: ^0.8.0
 
 
 dev_dependencies:
@@ -71,7 +72,7 @@ flutter:
   assets:
     - assets/images/
     - assets/anims/
-
+    - assets/tflow/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

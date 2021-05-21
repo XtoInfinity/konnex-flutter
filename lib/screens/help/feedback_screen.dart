@@ -14,6 +14,7 @@ class FeedbackScreen extends StatefulWidget {
 class _FeedbackScreenState extends State<FeedbackScreen> {
   TextEditingController controller = TextEditingController();
   bool isLoad = false;
+  HelpService helpService = HelpService();
 
   addFeedback() async {
     String message = controller.text;
@@ -21,7 +22,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     if (message.length > 0) {
       isLoad = true;
       setState(() {});
-      HelpService helpService = HelpService();
       await helpService.addFeedback(message);
       Get.to(DoneScreen(
         onTap: () => Get.close(2),
