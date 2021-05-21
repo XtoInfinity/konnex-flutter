@@ -6,6 +6,7 @@ import 'package:konnex_aerothon/screens/help/help_screen.dart';
 import 'package:konnex_aerothon/screens/messaging/message_screen.dart';
 import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/screens/playwin/play_screen.dart';
+import 'package:konnex_aerothon/utils/speech_overlay.dart';
 
 import 'models/instruction.dart';
 import 'models/instruction_set.dart';

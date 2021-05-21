@@ -61,6 +61,8 @@ class _KonnexBodyWidget extends StatefulWidget {
 }
 
 class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
+  TextEditingController controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,15 +75,18 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
             children: [
               _getSearchBox(),
               _getChipSection(),
-              Expanded(child: _NavigationOptionWidget(
-                onNavigatePressed: (navigation) async {
-                  LogUtil.instance
-                      .log('Navigation guide for ${navigation.title}');
-                  Navigator.of(context).pop();
-                  KonnexHandler.instance.startToolTipNavigation(
-                      this.widget.routeName, navigation.steps.toList());
-                },
-              )),
+              Expanded(
+                child: _NavigationOptionWidget(
+                  filter: controller.text,
+                  onNavigatePressed: (navigation) async {
+                    LogUtil.instance
+                        .log('Navigation guide for ${navigation.title}');
+                    Navigator.of(context).pop();
+                    KonnexHandler.instance.startToolTipNavigation(
+                        this.widget.routeName, navigation.steps.toList());
+                  },
+                ),
+              ),
             ],
           ),
           Positioned(
@@ -124,9 +129,7 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
                 size: 20,
                 color: Theme.of(context).primaryColor,
               ),
-              SizedBox(
-                width: 4,
-              ),
+              SizedBox(width: 4),
               Text(title),
             ],
           ),
@@ -174,12 +177,16 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       child: TextField(
-                        // autofocus: true,
+                        controller: controller,
                         decoration: InputDecoration.collapsed(
                             hintText: "Enter your issue"),
                         textInputAction: TextInputAction.search,
-                        onChanged: (val) {},
-                        onSubmitted: (val) {},
+                        onEditingComplete: () {
+                          setState(() {});
+                        },
+                        onSubmitted: (val) {
+                          setState(() {});
+                        },
                       ),
                     ),
                   ),
@@ -188,17 +195,29 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
             ),
           ),
         ),
-        Container(
-          margin: EdgeInsets.only(left: 10),
-          height: 40,
-          width: 40,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Theme.of(context).primaryColor,
-          ),
-          child: Icon(
-            Icons.keyboard_voice,
-            color: Colors.white,
+        InkWell(
+          onTap: () async {
+            String textFromSpeech = await Get.dialog(
+              SpeechOverlay(),
+            );
+            if (textFromSpeech != null) {
+              controller.text = textFromSpeech;
+              LogUtil.instance.log('Searched Nav for $textFromSpeech');
+              setState(() {});
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.only(left: 10),
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Theme.of(context).primaryColor,
+            ),
+            child: Icon(
+              Icons.keyboard_voice,
+              color: Colors.white,
+            ),
           ),
         )
       ],
@@ -208,9 +227,14 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
 
 class _NavigationOptionWidget extends StatelessWidget {
   final Function(NavigationObject navigation) onNavigatePressed;
+  final String filter;
 
-  const _NavigationOptionWidget({Key key, @required this.onNavigatePressed})
-      : super(key: key);
+  const _NavigationOptionWidget({
+    Key key,
+    @required this.onNavigatePressed,
+    String filter,
+  })  : this.filter = filter ?? '',
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -220,11 +244,16 @@ class _NavigationOptionWidget extends StatelessWidget {
           if (!snapshot.hasData) {
             return Text('Fetching data ....');
           }
+          List<NavigationObject> navObjects = snapshot.data.toList();
+          if (this.filter.isNotEmpty) {
+            // TODO logic to filter content
+            print('Filtering for: ${this.filter}');
+          }
           return AnimationLimiter(
             child: ListView.builder(
-              itemCount: snapshot.data.length,
+              itemCount: navObjects.length,
               itemBuilder: (context, index) {
-                final navObject = snapshot.data.elementAt(index);
+                final navObject = navObjects.elementAt(index);
                 return AnimationConfiguration.staggeredList(
                   position: index,
                   duration: const Duration(milliseconds: 375),
