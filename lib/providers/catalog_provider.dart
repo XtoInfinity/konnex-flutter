@@ -15,17 +15,18 @@ class CatalogProvider extends ChangeNotifier {
 
   List<Product> products = [
     Product(
-        cpCost: 200,
-        cpDescription: "This is a orange",
-        cpDiscountCost: 150,
-        cpName: "Orange",
-        cpId: "1",
-        cpPhoto: [
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFdUlevaWPqu7lObc3QkkGCZEbkRaN_yA-bw&usqp=CAU"
-        ],
-        cpmId: [
-          "1",
-        ]),
+      cpCost: 200,
+      cpDescription: "This is a orange",
+      cpDiscountCost: 150,
+      cpName: "Orange",
+      cpId: "1",
+      cpPhoto: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFdUlevaWPqu7lObc3QkkGCZEbkRaN_yA-bw&usqp=CAU"
+      ],
+      cpmId: [
+        "1",
+      ],
+    ),
     Product(
         cpCost: 300,
         cpDescription: "This is a apple",

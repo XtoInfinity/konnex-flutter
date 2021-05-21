@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:konnex_aerothon/konnex/konnex_handler.dart';
+import 'package:konnex_aerothon/screens/help/help_screen.dart';
 import 'package:konnex_aerothon/screens/messaging/message_screen.dart';
+import 'package:konnex_aerothon/screens/playwin/play_screen.dart';
 
 import 'models/instruction.dart';
 import 'models/instruction_set.dart';

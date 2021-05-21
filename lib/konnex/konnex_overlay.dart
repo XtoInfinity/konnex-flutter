@@ -119,7 +119,7 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
             children: [
               Icon(
                 icon,
-                size: 15,
+                size: 20,
                 color: Theme.of(context).primaryColor,
               ),
               SizedBox(
@@ -142,8 +142,9 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
         runSpacing: 5,
         alignment: WrapAlignment.start,
         children: [
-          _getChip(
-              "Get Help", Icons.help_outline, () => Get.to(MessageScreen())),
+          _getChip("Get Help", Icons.help_outline, () => Get.to(HelpScreen())),
+          _getChip("Play & Win", Icons.group_work_outlined,
+              () => Get.to(PlayScreen())),
         ],
       ),
     );

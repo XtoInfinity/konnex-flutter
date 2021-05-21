@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
 import 'package:konnex_aerothon/screens/catalog/category_screen.dart';
+import 'package:konnex_aerothon/screens/playwin/play_screen.dart';
 
 import 'package:konnex_aerothon/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
