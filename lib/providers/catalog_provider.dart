@@ -14,7 +14,7 @@ class CatalogProvider extends ChangeNotifier {
 
   List<Product> products = [
     Product(
-        officialId: 1,
+      officialId: 1,
         cpCost: 200,
         cpDescription: "This is a orange",
         cpDiscountCost: 150,
@@ -25,7 +25,8 @@ class CatalogProvider extends ChangeNotifier {
         ],
         cpmId: [
           "1",
-        ]),
+        ],
+    ),
     Product(
         officialId: 2,
         cpCost: 300,

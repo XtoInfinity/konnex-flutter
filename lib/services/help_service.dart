@@ -6,10 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/models/announcement.dart';
 import 'package:konnex_aerothon/models/article.dart';
+import 'package:konnex_aerothon/models/message.dart';
+import 'package:konnex_aerothon/utils/classifier.dart';
 
 class HelpService {
   String userId = GetStorage().read('userId');
   String appId = GetStorage().read('appId');
+  Classifier _classifier = Classifier();
 
   getAllArticles(
       AsyncSnapshot<QuerySnapshot> snapshot, List<Article> articles) async {
@@ -57,11 +60,14 @@ class HelpService {
   }
 
   addFeedback(String message) async {
+    final prediction = _classifier.classify(message);
+    String sentiment = prediction[0] < prediction[1] ? "positive" : "negative";
     await FirebaseFirestore.instance.collection("feedback").add({
       "userId": userId,
       "appId": appId,
       "message": message,
       "createdAt": Timestamp.now(),
+      "sentiment": sentiment,
     });
   }
 }
