@@ -3,38 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
-import 'package:konnex_aerothon/screens/help/help_screen.dart';
 import 'package:konnex_aerothon/screens/splash_screen.dart';
 
-import 'package:konnex_aerothon/utils/log_util.dart';
-import 'package:konnex_aerothon/utils/speech_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
   await [Permission.microphone, Permission.speech].request();
-  await Workmanager().initialize(
-    callbackDispatcher,
-    isInDebugMode: true,
-  );
   runApp(MyApp());
-}
-
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    print("Native called background task: $task");
-    await Firebase.initializeApp();
-    await LogUtil.ensureInitialised();
-    if (task == 'update-log') {
-      await LogUtil.instance.updateLogs();
-      print('Updated Logs Automatically');
-    }
-    return true;
-  });
 }
 
 class MyApp extends StatelessWidget {
@@ -75,7 +54,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         defaultTransition: Transition.cupertino,
-        home: HelpScreen(),
+        home: SplashScreen(),
       ),
     );
   }

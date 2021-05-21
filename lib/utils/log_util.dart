@@ -3,14 +3,37 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:path_provider/path_provider.dart' as path;
 
 /// Class Log Util
 ///
 /// Created to log a interaction
 class LogUtil {
+  /// Contains the instance
+  ///
+  /// Ensure that ``ensureInitialised()`` method is invoked before using it
+  static LogUtil instance = LogUtil._();
+
+  /// Constructor to initialise
+  LogUtil._();
+
+  Future<void> log(String log, [String logType = 'Normal']) async {
+    String appId = GetStorage().read('appId');
+    final userId = FirebaseAuth.instance.currentUser.uid;
+    // Get the time of logging
+    final currTime = DateTime.now().toIso8601String();
+    final ref =
+        FirebaseFirestore.instance.collection('application/$appId/logs');
+    ref.doc().set({
+      'log': log,
+      'time': currTime,
+      'type': logType,
+      'userId': userId,
+    });
+  }
+}
+/**
+ 
   /// Contains the instance
   ///
   /// Ensure that ``ensureInitialised()`` method is invoked before using it
@@ -86,4 +109,5 @@ class LogUtil {
       print(e.toString());
     }
   }
-}
+
+ */

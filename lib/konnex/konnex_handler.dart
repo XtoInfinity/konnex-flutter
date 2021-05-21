@@ -119,4 +119,32 @@ class KonnexHandler {
     print("${this._navObjects.toString()}");
     return this._navObjects;
   }
+
+  /// Used to update all the elemets via navObjects
+  convertAndInsertElement() async {
+    Map<String, Set<String>> screenElements = {};
+    this._navObjects?.forEach((navObj) {
+      navObj.steps.forEach((steps) {
+        steps.instructions.forEach((instruction) {
+          if (instruction is InstructionById) {
+            if (!screenElements.containsKey(steps.uniqueRouteName)) {
+              screenElements[steps.uniqueRouteName] = {};
+            }
+            screenElements[steps.uniqueRouteName].add(instruction.id);
+          }
+        });
+      });
+    });
+    final String appId = GetStorage().read('appId');
+    final ref = FirebaseFirestore.instance.collection('elements');
+    final keys = screenElements.keys;
+    for (var i = 0; i < keys.length; i++) {
+      final routeName = keys.elementAt(i);
+      await ref.doc().set({
+        'appId': appId,
+        'elements': screenElements[routeName].toList(),
+        'screenName': routeName,
+      });
+    }
+  }
 }

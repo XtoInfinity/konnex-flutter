@@ -67,16 +67,10 @@ class CategoryScreen extends StatelessWidget {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         backgroundColor: Colors.white,
-        title: GestureDetector(
-          onTap: () {
-            // pushNavigationsInFirestore();
-            LogUtil.instance.updateLogs();
-          },
-          child: Text(
-            "Catalog",
-            style: TextStyle(
-              color: Get.theme.primaryColor,
-            ),
+        title: Text(
+          "Catalog",
+          style: TextStyle(
+            color: Get.theme.primaryColor,
           ),
         ),
         actions: [
