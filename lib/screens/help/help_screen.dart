@@ -10,6 +10,7 @@ import 'package:konnex_aerothon/screens/help/article_screen.dart';
 import 'package:konnex_aerothon/screens/messaging/message_screen.dart';
 import 'package:konnex_aerothon/screens/report/report_screen.dart';
 import 'package:konnex_aerothon/services/help_service.dart';
+import 'package:konnex_aerothon/utils/speech_overlay.dart';
 
 class HelpScreen extends StatefulWidget {
   @override
@@ -17,6 +18,8 @@ class HelpScreen extends StatefulWidget {
 }
 
 class _HelpScreenState extends State<HelpScreen> {
+  TextEditingController controller = TextEditingController();
+
   issueWidget() {
     return Row(
       children: [
@@ -44,6 +47,7 @@ class _HelpScreenState extends State<HelpScreen> {
                         decoration: InputDecoration.collapsed(
                             hintText: "Enter your issue"),
                         textInputAction: TextInputAction.search,
+                        controller: controller,
                         onChanged: (val) {},
                         onSubmitted: (val) {},
                       ),
@@ -60,11 +64,25 @@ class _HelpScreenState extends State<HelpScreen> {
           width: 40,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Theme.of(context).primaryColor,
           ),
-          child: Icon(
-            Icons.keyboard_voice,
-            color: Colors.white,
+          clipBehavior: Clip.hardEdge,
+          child: Material(
+            color: Theme.of(context).primaryColor,
+            child: InkWell(
+              onTap: () async {
+                String value = await Get.dialog(
+                  SpeechOverlay(),
+                );
+                if (value != null) {
+                  controller.text = value;
+                  setState(() {});
+                }
+              },
+              child: Icon(
+                Icons.keyboard_voice,
+                color: Colors.white,
+              ),
+            ),
           ),
         )
       ],

@@ -53,6 +53,10 @@ dependencies:
   showcaseview: ^1.0.0
   tflite_flutter: ^0.8.0
   workmanager: ^0.4.0
+  speech_to_text:
+  permission_handler: ^6.1.0
+  highlight_text: ^0.7.2
+  avatar_glow: ^1.2.0
 
 dev_dependencies:
   flutter_test:
