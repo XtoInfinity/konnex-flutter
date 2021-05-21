@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'instruction.dart';
@@ -59,7 +60,7 @@ class InstructionSet {
 }
 
 Future<void> pushNavigationsInFirestore() async {
-  final String appId = 'pa5309JvtnfFLqwNCJr5';
+  final String appId = GetStorage().read('appId');
   final ref =
       FirebaseFirestore.instance.collection('application/$appId/navigations/');
   await ref.doc('10AddItemToCart').set(addToCart);

@@ -23,35 +23,35 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  badges: ^1.2.0
   bubble: ^1.1.9+1
   build_runner: ^1.0.0
+  carousel_pro: null
+  cloud_firestore: ^2.2.0
   cupertino_icons: ^1.0.2
   fab_circular_menu: ^1.0.2
+  firebase_analytics: ^8.1.0
+  firebase_auth: ^1.2.0
+  firebase_core: ^1.2.0
+  firebase_messaging: ^10.0.0
+  firebase_storage: ^8.1.0
+  flutter_rating_bar: ^4.0.0
+  flutter_spinkit: null
   flutter_staggered_animations: ^1.0.0
   get: ^3.26.0
   get_storage: null
+  image_cropper: null
+  image_picker: ^0.7.4
   intl: ^0.17.0
   json_serializable: ^3.0.0
-  material_design_icons_flutter: ^4.0.5955
-  render_metrics: ^2.0.0
-  showcaseview: ^1.0.0
-  firebase_core: ^1.2.0
-  firebase_messaging: ^10.0.0
-  firebase_analytics: ^8.1.0
-  cloud_firestore: ^2.2.0
-  firebase_storage: ^8.1.0
-  flutter_spinkit:
-  firebase_auth: ^1.2.0
-  image_cropper:
-  image_picker: ^0.7.4
   lottie: ^1.0.1
+  material_design_icons_flutter: ^4.0.5955
+  photo_view: null
   provider: ^5.0.0
+  render_metrics: ^2.0.0
   shimmer: ^1.1.2
-  flutter_rating_bar: ^4.0.0
-  carousel_pro:
-  photo_view:
-  badges: ^1.2.0
-
+  showcaseview: ^1.0.0
+  workmanager: ^0.4.0
 
 dev_dependencies:
   flutter_test:
@@ -71,7 +71,6 @@ flutter:
   assets:
     - assets/images/
     - assets/anims/
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

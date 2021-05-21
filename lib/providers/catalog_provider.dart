@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/models/catalog.dart';
 import 'package:konnex_aerothon/screens/catalog/cart_screen.dart';
 
@@ -15,6 +14,7 @@ class CatalogProvider extends ChangeNotifier {
 
   List<Product> products = [
     Product(
+        officialId: 1,
         cpCost: 200,
         cpDescription: "This is a orange",
         cpDiscountCost: 150,
@@ -27,6 +27,7 @@ class CatalogProvider extends ChangeNotifier {
           "1",
         ]),
     Product(
+        officialId: 2,
         cpCost: 300,
         cpDescription: "This is a apple",
         cpDiscountCost: 250,
@@ -39,6 +40,7 @@ class CatalogProvider extends ChangeNotifier {
           "2",
         ]),
     Product(
+        officialId: 3,
         cpCost: 100,
         cpDescription: "This is a banana",
         cpDiscountCost: 80,

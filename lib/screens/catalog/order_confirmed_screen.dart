@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:konnex_aerothon/screens/splash_screen.dart';
+import 'package:konnex_aerothon/screens/catalog/category_screen.dart';
 import 'package:konnex_aerothon/widgets/bottom_button.dart';
 import 'package:lottie/lottie.dart';
 
@@ -12,7 +12,7 @@ class OrderConfirmedScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: WillPopScope(
         onWillPop: () async {
-          Get.offAll(SplashScreen());
+          Get.offAll(CategoryScreen());
           return false;
         },
         child: Column(
@@ -85,7 +85,7 @@ class OrderConfirmedScreen extends StatelessWidget {
             ),
             BottomButton(
               onTap: () {
-                Get.offAll(SplashScreen());
+                Get.offAll(CategoryScreen());
               },
               text: "Continue",
             )

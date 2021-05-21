@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart' as path;
 
 /// Class Log Util
@@ -24,24 +28,28 @@ class LogUtil {
   }
 
   static Future<LogUtil> ensureInitialised() async {
-    if (instance == null) {
-      Directory root;
-      if (Platform.isIOS) {
-        root = await path.getApplicationDocumentsDirectory();
-      } else {
-        root = await path.getExternalStorageDirectory();
-      }
-      // Get the log Directory
-      final logDir = Directory('${root.path}/logs');
-      // Get the log file from the directory
-      final logFile = File('${logDir.path}/konnex.log');
-      // Create if it doesn't exist
-      if (!logFile.existsSync()) {
-        logFile.createSync();
-      }
-      // Create the instance
-      instance = LogUtil._(logFile);
+    if (instance != null) return instance;
+
+    Directory root;
+    if (Platform.isIOS) {
+      root = await path.getApplicationDocumentsDirectory();
+    } else {
+      root = await path.getExternalStorageDirectory();
     }
+    // Get the log Directory
+    final logDir = Directory('${root.path}/logs');
+    if (!await logDir.exists()) {
+      await logDir.create();
+    }
+    // Get the log file from the directory
+    final logFile = File('${logDir.path}/konnex.log');
+    // Create if it doesn't exist
+    if (!logFile.existsSync()) {
+      logFile.createSync();
+    }
+    // Create the instance
+    instance = LogUtil._(logFile);
+
     return instance;
   }
 
@@ -51,7 +59,8 @@ class LogUtil {
     // Get the time of logging
     final currTime = DateTime.now().toUtc();
     // String to log
-    String logStr = '${currTime.toString()}: ${logType ?? 'Normal'} : $log\n';
+    String logStr =
+        '${currTime.toString()}::: ${logType ?? 'Normal'} ::: $log\n';
     print(logStr);
     // Add String to the log contents
     this._logContents += logStr;
@@ -59,10 +68,22 @@ class LogUtil {
     return file.writeAsString(this._logContents);
   }
 
-  //TODO build this method
-  Future<void> updateLogs() {
-    throw UnimplementedError();
-    // Call REST API for updating user logs
-    // If succesful, remove all contents from the file
+  // Uploads logs to the backend server
+  Future<void> updateLogs() async {
+    try {
+      if (this._logContents.isEmpty) return;
+      final userId = FirebaseAuth.instance.currentUser.uid;
+
+      final cDate = DateTime.now().toUtc().toString();
+      final logFileRef =
+          FirebaseStorage.instance.ref('logs/$userId/$cDate.log');
+      final uploadTask = logFileRef.putString(this._logContents);
+      await uploadTask.whenComplete(() {});
+      await this._logFile.writeAsString('');
+      print('Logs Updated');
+    } catch (e) {
+      this.log(e.toString(), 'ERROR');
+      print(e.toString());
+    }
   }
 }

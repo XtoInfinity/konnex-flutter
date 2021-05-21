@@ -8,6 +8,7 @@ import 'package:konnex_aerothon/konnex/konnex_handler.dart';
 import 'package:konnex_aerothon/models/catalog.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
 import 'package:konnex_aerothon/screens/catalog/cart_screen.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/widgets/catalog/catalog_discount_text_widget.dart';
 import 'package:konnex_aerothon/widgets/catalog/custom_error_widget.dart';
 import 'package:konnex_aerothon/widgets/catalog/product_detail_bottom_sheet.dart';
@@ -122,8 +123,12 @@ class ProductsScreen extends StatelessWidget {
                                     manager: KonnexHandler.instance.manager,
                                     id: '${index}AddToCart',
                                     child: ElevatedButton(
-                                      onPressed: () => catalogProvider
-                                          .addItemToCart(product.cpId),
+                                      onPressed: () {
+                                        catalogProvider
+                                            .addItemToCart(product.cpId);
+                                        LogUtil.instance.log(
+                                            'Added product to cart ${product.officialId}');
+                                      },
                                       child: Text("Add to Cart"),
                                     ),
                                   )

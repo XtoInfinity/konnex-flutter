@@ -75,6 +75,8 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
               _getChipSection(),
               Expanded(child: _NavigationOptionWidget(
                 onNavigatePressed: (navigation) async {
+                  LogUtil.instance
+                      .log('Navigation guide for ${navigation.title}');
                   Navigator.of(context).pop();
                   KonnexHandler.instance.startToolTipNavigation(
                       this.widget.routeName, navigation.steps.toList());

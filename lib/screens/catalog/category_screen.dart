@@ -9,6 +9,7 @@ import 'package:konnex_aerothon/models/catalog.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
 import 'package:konnex_aerothon/screens/catalog/cart_screen.dart';
 import 'package:konnex_aerothon/screens/catalog/products_screen.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/widgets/custom_network_image.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ class CategoryScreen extends StatelessWidget {
             catalogProvider.clearData();
             catalogProvider.selectedCategoryIndex = index;
             Get.to(() => ProductsScreen(), transition: Transition.rightToLeft);
+            LogUtil.instance.log('Selected ${category.ccName}');
           },
           child: Column(
             children: [
@@ -67,7 +69,8 @@ class CategoryScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         title: GestureDetector(
           onTap: () {
-            pushNavigationsInFirestore();
+            // pushNavigationsInFirestore();
+            LogUtil.instance.updateLogs();
           },
           child: Text(
             "Catalog",

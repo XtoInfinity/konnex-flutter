@@ -6,6 +6,7 @@ import 'package:konnex_aerothon/konnex/konnex_handler.dart';
 import 'package:konnex_aerothon/models/catalog.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
 import 'package:konnex_aerothon/screens/catalog/add_address_screen.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/widgets/bottom_button.dart';
 import 'package:konnex_aerothon/widgets/catalog/home_delivery_section.dart';
 import 'package:konnex_aerothon/widgets/catalog/pickup_section.dart';
@@ -53,6 +54,8 @@ class _AddressScreenState extends State<AddressScreen> {
                           onTap: () {
                             catalogProvider.selectedAddressId = 0;
                             catalogProvider.notify();
+                            LogUtil.instance
+                                .log('Selected Pickup as delivery option');
                           },
                           child: Card(
                             child: PickupSection(() {
@@ -85,6 +88,8 @@ class _AddressScreenState extends State<AddressScreen> {
                                     catalogProvider.selectedAddressId =
                                         userAddress.addressId;
                                     catalogProvider.notify();
+                                    LogUtil.instance.log(
+                                        'Chose personal Address for delivery.');
                                   },
                                       userAddress.addressId,
                                       catalogProvider.selectedAddressId,
@@ -93,6 +98,8 @@ class _AddressScreenState extends State<AddressScreen> {
                               ),
                               InkWell(
                                 onTap: () {
+                                  LogUtil.instance
+                                      .log('Opened add address screen');
                                   Get.to(() => AddAddressScreen(),
                                       transition: Transition.rightToLeft);
                                 },

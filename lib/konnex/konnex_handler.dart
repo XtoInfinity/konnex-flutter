@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:render_metrics/render_metrics.dart';
 
@@ -105,7 +106,8 @@ class KonnexHandler {
   /// Returns all the navigation objects for this particular screen
   Future<List<NavigationObject>> fetchAllNavigationOjects() async {
     if (this._navObjects != null) return this._navObjects;
-    final String appId = 'pa5309JvtnfFLqwNCJr5';
+    // 'pa5309JvtnfFLqwNCJr5';
+    final String appId = GetStorage().read('appId');
     final snapshot = await FirebaseFirestore.instance
         .collection('application/$appId/navigations/')
         .get();

@@ -6,6 +6,7 @@ import 'package:konnex_aerothon/models/catalog.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
 import 'package:konnex_aerothon/screens/catalog/address_screen.dart';
 import 'package:konnex_aerothon/screens/catalog/order_confirmed_screen.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/widgets/bottom_button.dart';
 import 'package:konnex_aerothon/widgets/catalog/catalog_discount_text_widget.dart';
 import 'package:konnex_aerothon/widgets/catalog/custom_error_widget.dart';
@@ -94,6 +95,7 @@ class CartScreen extends StatelessWidget {
                               positiveButtonOnTap: () {
                                 Get.close(1);
                                 Get.to(OrderConfirmedScreen());
+                                LogUtil.instance.log('Order made');
                               },
                             ));
                           }
@@ -199,11 +201,15 @@ class _CartItem extends StatelessWidget {
             catalogProvider.updateCartQuantity(
                 catalogProvider.cartProducts[index].quantity + 1,
                 catalogProvider.cartProducts[index]);
+            LogUtil.instance.log(
+                'Added quantity for ${catalogProvider.cartProducts[index].officialId}');
           } else {
             if (catalogProvider.cartProducts[index].quantity != 1) {
               catalogProvider.updateCartQuantity(
                   catalogProvider.cartProducts[index].quantity - 1,
                   catalogProvider.cartProducts[index]);
+              LogUtil.instance.log(
+                  'Removed quantity for ${catalogProvider.cartProducts[index].officialId}');
             }
           }
         },
@@ -306,6 +312,7 @@ class _CartItem extends StatelessWidget {
           InkWell(
             onTap: () {
               catalogProvider.deleteCartItem(product);
+              LogUtil.instance.log('Removed Product for ${product.officialId}');
             },
             child: RenderMetricsObject(
               manager: KonnexHandler.instance.manager,

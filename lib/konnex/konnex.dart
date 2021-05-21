@@ -3,6 +3,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:konnex_aerothon/konnex/konnex_handler.dart';
 import 'package:konnex_aerothon/screens/messaging/message_screen.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 
 import 'models/instruction.dart';
 import 'models/instruction_set.dart';
@@ -28,6 +29,7 @@ class _KonnexWidgetState extends State<KonnexWidget> {
   @override
   void initState() {
     this.isOpen = false;
+    LogUtil.instance.log('Opened ${this.widget.currentRoute}');
     super.initState();
   }
 
@@ -68,34 +70,5 @@ class _KonnexWidgetState extends State<KonnexWidget> {
     } else {
       Navigator.of(context).popUntil((route) => route.isCurrent);
     }
-  }
-
-  mockNavigation() {
-    KonnexHandler.instance.startToolTipNavigation(this.widget.currentRoute, [
-      InstructionSet(
-        uniqueRouteName: '0',
-        instructions: [
-          InstructionById('1'),
-          InstructionById('2'),
-          InstructionById('3'),
-        ],
-      ),
-      InstructionSet(
-        uniqueRouteName: '2',
-        instructions: [
-          InstructionById('1'),
-          InstructionById('2'),
-          InstructionById('3'),
-        ],
-      ),
-      InstructionSet(
-        uniqueRouteName: '3',
-        instructions: [
-          InstructionById('1'),
-          InstructionById('2'),
-          InstructionById('3'),
-        ],
-      ),
-    ]);
   }
 }

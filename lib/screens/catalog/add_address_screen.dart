@@ -4,6 +4,7 @@ import 'package:konnex_aerothon/konnex/konnex.dart';
 import 'package:konnex_aerothon/konnex/konnex_handler.dart';
 import 'package:konnex_aerothon/models/catalog.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/widgets/bottom_button.dart';
 import 'package:provider/provider.dart';
 import 'package:render_metrics/render_metrics.dart';
@@ -124,6 +125,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       city: city,
                       pincode: pincode,
                       state: "Karnataka"));
+                  LogUtil.instance.log('Added New Address');
                 } else {
                   Get.rawSnackbar(message: "Please enter all the details");
                 }
