@@ -246,7 +246,10 @@ class _NavigationOptionWidget extends StatelessWidget {
           }
           List<NavigationObject> navObjects = snapshot.data.toList();
           if (this.filter.isNotEmpty) {
-            // TODO logic to filter content
+            navObjects.retainWhere((nav) {
+              int similarity = partialRatio(nav.title, this.filter);
+              return similarity > 50;
+            });
             print('Filtering for: ${this.filter}');
           }
           return AnimationLimiter(
