@@ -23,22 +23,30 @@ class KonnexHandler {
 
   List<InstructionSet> _currInstructionSet = [];
 
-  void startToolTipNavigation(BuildContext context, String routeName,
-      List<InstructionSet> setOfInstructions) {
+  void startToolTipNavigation(
+      String routeName, List<InstructionSet> setOfInstructions) {
     this._currInstructionSet = setOfInstructions;
-    this.resumeToolTipNavIfAny(context, routeName);
+    // this.resumeToolTipNavIfAny(context, routeName);
   }
 
   Future<void> resumeToolTipNavIfAny(
       BuildContext context, String routeName) async {
     // If there are no instructions, Don't do anything
     if (this._currInstructionSet.isEmpty) return;
-    final instructionSet = this._currInstructionSet.first;
+    InstructionSet instructionSet = this._currInstructionSet.first;
 
     /// If the user is not on the correct screen, the navigation guide won't
     /// do anything
     if (instructionSet.uniqueRouteName != routeName) {
-      return;
+      int index = _ifSkipabble(routeName);
+      if (index == -1)
+        return;
+      else {
+        for (var i = 0; i < index; i++) {
+          this._currInstructionSet.removeAt(0);
+        }
+        instructionSet = this._currInstructionSet.first;
+      }
     }
     List<Instruction> firstSet = instructionSet.instructions;
     // Get the top padding of the screen to eliminate it from the y coordinate.
@@ -59,22 +67,38 @@ class KonnexHandler {
           data.xCenter,
           data.yCenter - topPadding,
           Duration(milliseconds: instruction.waitInMils),
-          color: Colors.red,
-          size: 20,
+          // color: Colors.red,
+          size: 30,
         ));
       } else if (instruction is InstructionByCoordinate) {
         await Navigator.of(context).push(_ToolTipOverlay(
           instruction.x,
           instruction.y - topPadding,
           Duration(milliseconds: instruction.waitInMils),
-          color: Colors.red,
-          size: 20,
+          // color: Colors.red,
+          size: 30,
         ));
       } else {
         throw UnimplementedError();
       }
     }
     this._currInstructionSet.removeAt(0);
+  }
+
+  /// Checks if the routing is skippable in such a manner
+  /// that the current route instruction starts without affecting process
+  ///
+  /// Returns `-1` if not possible,
+  /// else returns `index` of the current route instruction
+  int _ifSkipabble(String currRoute) {
+    for (var i = 0; i < this._currInstructionSet.length; i++) {
+      final instSet = this._currInstructionSet.elementAt(i);
+      if (instSet.uniqueRouteName == currRoute) return i;
+      if (!instSet.canSkip) {
+        return -1;
+      }
+    }
+    return -1;
   }
 
   /// Returns all the navigation objects for this particular screen

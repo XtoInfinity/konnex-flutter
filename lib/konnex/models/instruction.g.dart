@@ -6,7 +6,6 @@ part of 'instruction.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-
 InstructionById _$InstructionByIdFromJson(Map<String, dynamic> json) {
   return InstructionById(
     json['id'] as String,

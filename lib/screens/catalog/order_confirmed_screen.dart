@@ -5,6 +5,7 @@ import 'package:konnex_aerothon/widgets/bottom_button.dart';
 import 'package:lottie/lottie.dart';
 
 class OrderConfirmedScreen extends StatelessWidget {
+  static const routeName = '/OrderConfirmedScreen';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

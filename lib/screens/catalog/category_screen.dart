@@ -2,6 +2,9 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:konnex_aerothon/config/constants.dart';
+import 'package:konnex_aerothon/konnex/konnex.dart';
+import 'package:konnex_aerothon/konnex/konnex_handler.dart';
+import 'package:konnex_aerothon/konnex/models/instruction_set.dart';
 import 'package:konnex_aerothon/models/catalog.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
 import 'package:konnex_aerothon/screens/catalog/cart_screen.dart';
@@ -9,39 +12,46 @@ import 'package:konnex_aerothon/screens/catalog/products_screen.dart';
 import 'package:konnex_aerothon/widgets/custom_network_image.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 import 'package:provider/provider.dart';
+import 'package:render_metrics/render_metrics.dart';
 
 class CategoryScreen extends StatelessWidget {
+  static const routeName = '/CategoryScreen';
+
   categoryCard(int index, CatalogProvider catalogProvider) {
     Category category = catalogProvider.categories[index];
 
-    return Material(
-      color: Colors.white,
-      child: InkWell(
-        onTap: () {
-          catalogProvider.clearData();
-          catalogProvider.selectedCategoryIndex = index;
-          Get.to(() => ProductsScreen(), transition: Transition.rightToLeft);
-        },
-        child: Column(
-          children: [
-            Expanded(
-              child: CustomNetWorkImage(
-                category.ccPhoto,
-                assetLink: Constants.productHolderURL,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-              child: Text(
-                category.ccName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
+    return RenderMetricsObject(
+      id: '$index',
+      manager: KonnexHandler.instance.manager,
+      child: Material(
+        color: Colors.white,
+        child: InkWell(
+          onTap: () {
+            catalogProvider.clearData();
+            catalogProvider.selectedCategoryIndex = index;
+            Get.to(() => ProductsScreen(), transition: Transition.rightToLeft);
+          },
+          child: Column(
+            children: [
+              Expanded(
+                child: CustomNetWorkImage(
+                  category.ccPhoto,
+                  assetLink: Constants.productHolderURL,
                 ),
               ),
-            )
-          ],
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                child: Text(
+                  category.ccName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -55,10 +65,15 @@ class CategoryScreen extends StatelessWidget {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         backgroundColor: Colors.white,
-        title: Text(
-          "Catalog",
-          style: TextStyle(
-            color: Get.theme.primaryColor,
+        title: GestureDetector(
+          onTap: () {
+            pushNavigationsInFirestore();
+          },
+          child: Text(
+            "Catalog",
+            style: TextStyle(
+              color: Get.theme.primaryColor,
+            ),
           ),
         ),
         actions: [
@@ -68,20 +83,24 @@ class CategoryScreen extends StatelessWidget {
               onTap: () {
                 Get.to(() => CartScreen(), transition: Transition.rightToLeft);
               },
-              child: Container(
-                margin: EdgeInsets.only(left: 10, right: 22),
-                alignment: Alignment.center,
-                child: Badge(
-                  badgeContent: Text(
-                    catalogProvider.cartProducts.length.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  position: BadgePosition.bottomEnd(),
-                  showBadge: catalogProvider.cartProducts.length != 0,
-                  child: Icon(
-                    Icons.shopping_cart_outlined,
-                    size: 28,
-                    color: Theme.of(context).primaryColor,
+              child: RenderMetricsObject(
+                manager: KonnexHandler.instance.manager,
+                id: 'cartButton',
+                child: Container(
+                  margin: EdgeInsets.only(left: 10, right: 22),
+                  alignment: Alignment.center,
+                  child: Badge(
+                    badgeContent: Text(
+                      catalogProvider.cartProducts.length.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    position: BadgePosition.bottomEnd(),
+                    showBadge: catalogProvider.cartProducts.length != 0,
+                    child: Icon(
+                      Icons.shopping_cart_outlined,
+                      size: 28,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ),
@@ -132,6 +151,7 @@ class CategoryScreen extends StatelessWidget {
                 ),
               ),
             ),
+      floatingActionButton: KonnexWidget(currentRoute: routeName),
     );
   }
 }

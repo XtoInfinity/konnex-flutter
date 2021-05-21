@@ -24,9 +24,3 @@ Map<String, dynamic> _$NavigationObjectToJson(NavigationObject instance) =>
       'steps': instance.steps?.map((e) => e?.toJson())?.toList(),
     };
 
-
-Map<String, dynamic> _$InstructionSetToJson(InstructionSet instance) =>
-    <String, dynamic>{
-      'uniqueRouteName': instance.uniqueRouteName,
-      'instructions': instance.instructions?.map((e) => e?.toJson())?.toList(),
-    };

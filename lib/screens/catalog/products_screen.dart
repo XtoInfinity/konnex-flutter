@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:konnex_aerothon/config/constants.dart';
+import 'package:konnex_aerothon/konnex/konnex.dart';
+import 'package:konnex_aerothon/konnex/konnex_handler.dart';
 import 'package:konnex_aerothon/models/catalog.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
 import 'package:konnex_aerothon/screens/catalog/cart_screen.dart';
@@ -13,8 +15,10 @@ import 'package:konnex_aerothon/widgets/custom_network_image.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:render_metrics/render_metrics.dart';
 
 class ProductsScreen extends StatelessWidget {
+  static const routeName = '/ProductsScreen';
   productCard(int index, CatalogProvider catalogProvider) {
     Product product = catalogProvider.products[index];
 
@@ -114,10 +118,14 @@ class ProductsScreen extends StatelessWidget {
                           Container(
                             width: double.infinity,
                             child: product.quantity == null
-                                ? ElevatedButton(
-                                    onPressed: () => catalogProvider
-                                        .addItemToCart(product.cpId),
-                                    child: Text("Add to Cart"),
+                                ? RenderMetricsObject(
+                                    manager: KonnexHandler.instance.manager,
+                                    id: '${index}AddToCart',
+                                    child: ElevatedButton(
+                                      onPressed: () => catalogProvider
+                                          .addItemToCart(product.cpId),
+                                      child: Text("Add to Cart"),
+                                    ),
                                   )
                                 : ElevatedButton(
                                     onPressed: () {
@@ -210,20 +218,24 @@ class ProductsScreen extends StatelessWidget {
               onTap: () {
                 Get.to(() => CartScreen(), transition: Transition.rightToLeft);
               },
-              child: Container(
-                margin: EdgeInsets.only(left: 10, right: 22),
-                alignment: Alignment.center,
-                child: Badge(
-                  badgeContent: Text(
-                    catalogProvider.cartProducts.length.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  position: BadgePosition.bottomEnd(),
-                  showBadge: catalogProvider.cartProducts.length != 0,
-                  child: Icon(
-                    Icons.shopping_cart_outlined,
-                    size: 28,
-                    color: Theme.of(context).primaryColor,
+              child: RenderMetricsObject(
+                manager: KonnexHandler.instance.manager,
+                id: 'cartButton',
+                child: Container(
+                  margin: EdgeInsets.only(left: 10, right: 22),
+                  alignment: Alignment.center,
+                  child: Badge(
+                    badgeContent: Text(
+                      catalogProvider.cartProducts.length.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    position: BadgePosition.bottomEnd(),
+                    showBadge: catalogProvider.cartProducts.length != 0,
+                    child: Icon(
+                      Icons.shopping_cart_outlined,
+                      size: 28,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ),
@@ -252,6 +264,7 @@ class ProductsScreen extends StatelessWidget {
                       },
                     ),
             ),
+      floatingActionButton: KonnexWidget(currentRoute: routeName),
     );
   }
 }

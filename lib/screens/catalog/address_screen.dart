@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:konnex_aerothon/konnex/konnex.dart';
+import 'package:konnex_aerothon/konnex/konnex_handler.dart';
 import 'package:konnex_aerothon/models/catalog.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
 import 'package:konnex_aerothon/screens/catalog/add_address_screen.dart';
@@ -10,8 +12,10 @@ import 'package:konnex_aerothon/widgets/catalog/pickup_section.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 
 import 'package:provider/provider.dart';
+import 'package:render_metrics/render_metrics.dart';
 
 class AddressScreen extends StatefulWidget {
+  static const routeName = '/AddressScreen';
   @override
   _AddressScreenState createState() => _AddressScreenState();
 }
@@ -36,6 +40,7 @@ class _AddressScreenState extends State<AddressScreen> {
           ),
         ),
       ),
+      floatingActionButton: KonnexWidget(currentRoute: AddressScreen.routeName),
       body: catalogProvider.isAddressLoad
           ? CustomLoading()
           : Column(
@@ -91,17 +96,21 @@ class _AddressScreenState extends State<AddressScreen> {
                                   Get.to(() => AddAddressScreen(),
                                       transition: Transition.rightToLeft);
                                 },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 16),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.add),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text("Add Address"),
-                                    ],
+                                child: RenderMetricsObject(
+                                  manager: KonnexHandler.instance.manager,
+                                  id: 'addAdressButton',
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 16),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.add),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text("Add Address"),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               )
@@ -112,13 +121,17 @@ class _AddressScreenState extends State<AddressScreen> {
                     ),
                   ),
                 ),
-                BottomButton(
-                  onTap: () {
-                    Get.close(1);
-                  },
-                  text: "Confirm",
-                  backColor: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
+                RenderMetricsObject(
+                  manager: KonnexHandler.instance.manager,
+                  id: 'confirmButton',
+                  child: BottomButton(
+                    onTap: () {
+                      Get.close(1);
+                    },
+                    text: "Confirm",
+                    backColor: Theme.of(context).primaryColor,
+                    textColor: Colors.white,
+                  ),
                 )
               ],
             ),

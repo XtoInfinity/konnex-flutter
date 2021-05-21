@@ -6,7 +6,7 @@ class _KonnexBodyOverlay extends ModalRoute<void> {
   _KonnexBodyOverlay(this.routeName);
 
   @override
-  Duration get transitionDuration => Duration(milliseconds: 500);
+  Duration get transitionDuration => Duration(milliseconds: 250);
 
   @override
   bool get opaque => false;
@@ -74,9 +74,10 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
               _getSearchBox(),
               _getChipSection(),
               Expanded(child: _NavigationOptionWidget(
-                onNavigatePressed: (navigation) {
+                onNavigatePressed: (navigation) async {
+                  Navigator.of(context).pop();
                   KonnexHandler.instance.startToolTipNavigation(
-                      context, this.widget.routeName, navigation.steps);
+                      this.widget.routeName, navigation.steps.toList());
                 },
               )),
             ],

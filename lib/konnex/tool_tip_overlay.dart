@@ -127,8 +127,8 @@ class __RippleContainerState extends State<_RippleContainer>
           return Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              _buildContainer(this.widget.size * 0.7 * this._controller.value),
               _buildContainer(this.widget.size),
+              _buildContainer(this.widget.size * 0.7 * this._controller.value),
             ],
           );
         },
@@ -143,6 +143,7 @@ class __RippleContainerState extends State<_RippleContainer>
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(color: this.widget.borderColor, width: 2),
+        color: Colors.black,
       ),
     );
   }

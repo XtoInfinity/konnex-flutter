@@ -9,6 +9,7 @@ import 'package:konnex_aerothon/widgets/custom_network_image.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 
 class ProductDetailScreen extends StatefulWidget {
+  static const routeName = '/ProductDetailScreen';
   final String productId;
 
   ProductDetailScreen({this.productId = "LKEqxD0DVHuk"});

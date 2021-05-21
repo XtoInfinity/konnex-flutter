@@ -12,8 +12,11 @@ part 'konnex_overlay.dart';
 
 class KonnexWidget extends StatefulWidget {
   final String currentRoute;
+  final Color color;
 
-  const KonnexWidget({Key key, @required this.currentRoute}) : super(key: key);
+  const KonnexWidget(
+      {Key key, @required this.currentRoute, this.color = Colors.transparent})
+      : super(key: key);
 
   @override
   _KonnexWidgetState createState() => _KonnexWidgetState();
@@ -41,7 +44,7 @@ class _KonnexWidgetState extends State<KonnexWidget> {
     return Visibility(
       visible: !this.isOpen,
       child: FloatingActionButton(
-        backgroundColor: Colors.transparent,
+        backgroundColor: widget.color,
         onPressed: () {
           this.onToggle();
         },
@@ -57,7 +60,8 @@ class _KonnexWidgetState extends State<KonnexWidget> {
     this.isOpen = !this.isOpen;
     setState(() {});
     if (this.isOpen) {
-      await Navigator.of(context).push(_KonnexBodyOverlay(this.widget.currentRoute));
+      await Navigator.of(context)
+          .push(_KonnexBodyOverlay(this.widget.currentRoute));
       if (this.mounted && this.isOpen) {
         this.onToggle();
       }
@@ -67,8 +71,7 @@ class _KonnexWidgetState extends State<KonnexWidget> {
   }
 
   mockNavigation() {
-    KonnexHandler.instance
-        .startToolTipNavigation(context, this.widget.currentRoute, [
+    KonnexHandler.instance.startToolTipNavigation(this.widget.currentRoute, [
       InstructionSet(
         uniqueRouteName: '0',
         instructions: [

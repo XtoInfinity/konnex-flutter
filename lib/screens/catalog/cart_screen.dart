@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:konnex_aerothon/konnex/konnex.dart';
+import 'package:konnex_aerothon/konnex/konnex_handler.dart';
 import 'package:konnex_aerothon/models/catalog.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
 import 'package:konnex_aerothon/screens/catalog/address_screen.dart';
@@ -13,8 +15,10 @@ import 'package:konnex_aerothon/widgets/dialog.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 
 import 'package:provider/provider.dart';
+import 'package:render_metrics/render_metrics.dart';
 
 class CartScreen extends StatelessWidget {
+  static const routeName = '/CartScreen';
   @override
   Widget build(BuildContext context) {
     final catalogProvider = Provider.of<CatalogProvider>(context);
@@ -30,6 +34,10 @@ class CartScreen extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: KonnexWidget(
+        currentRoute: routeName,
+        color: Colors.white,
+      ),
       body: catalogProvider.cartProducts.length == 0
           ? CustomErrorWidget(
               title: "No products in your cart ",
@@ -44,7 +52,11 @@ class CartScreen extends StatelessWidget {
                         child: Container(
                           child: Column(
                             children: [
-                              _AddressSection(),
+                              RenderMetricsObject(
+                                manager: KonnexHandler.instance.manager,
+                                id: 'deliverAddressContainer',
+                                child: _AddressSection(),
+                              ),
                               ListView.builder(
                                 itemCount: catalogProvider.cartProducts.length,
                                 shrinkWrap: true,
@@ -59,31 +71,35 @@ class CartScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    BottomButton(
-                      onTap: () {
-                        if (catalogProvider.selectedAddressId == null) {
-                          Get.rawSnackbar(
-                              message: "Please add a delivery address",
-                              mainButton: TextButton(
-                                child: Text("Add Address"),
-                                onPressed: () {
-                                  Get.to(() => AddressScreen(),
-                                      transition: Transition.rightToLeft);
-                                },
-                              ));
-                        } else {
-                          Get.dialog(CustomDialog(
-                            "Confirm Order",
-                            "Do you want to confirm this order? You cannot cancel this order once it is confirmed.",
-                            positiveButtonText: "Confirm Order",
-                            positiveButtonOnTap: () {
-                              Get.close(1);
-                              Get.to(OrderConfirmedScreen());
-                            },
-                          ));
-                        }
-                      },
-                      text: "Place Order",
+                    RenderMetricsObject(
+                      manager: KonnexHandler.instance.manager,
+                      id: 'placeOrderButton',
+                      child: BottomButton(
+                        onTap: () {
+                          if (catalogProvider.selectedAddressId == null) {
+                            Get.rawSnackbar(
+                                message: "Please add a delivery address",
+                                mainButton: TextButton(
+                                  child: Text("Add Address"),
+                                  onPressed: () {
+                                    Get.to(() => AddressScreen(),
+                                        transition: Transition.rightToLeft);
+                                  },
+                                ));
+                          } else {
+                            Get.dialog(CustomDialog(
+                              "Confirm Order",
+                              "Do you want to confirm this order? You cannot cancel this order once it is confirmed.",
+                              positiveButtonText: "Confirm Order",
+                              positiveButtonOnTap: () {
+                                Get.close(1);
+                                Get.to(OrderConfirmedScreen());
+                              },
+                            ));
+                          }
+                        },
+                        text: "Place Order",
+                      ),
                     )
                   ],
                 ),
@@ -124,12 +140,16 @@ class _AddressSection extends StatelessWidget {
               const SizedBox(
                 height: 4,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.to(() => AddressScreen(),
-                      transition: Transition.rightToLeft);
-                },
-                child: Text("Change or Add Address"),
+              RenderMetricsObject(
+                manager: KonnexHandler.instance.manager,
+                id: 'addDeliveryButton',
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.to(() => AddressScreen(),
+                        transition: Transition.rightToLeft);
+                  },
+                  child: Text("Change or Add Address"),
+                ),
               )
             ],
           ),
@@ -146,12 +166,16 @@ class _AddressSection extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.to(() => AddressScreen(),
-                      transition: Transition.rightToLeft);
-                },
-                child: Text("Add Delivery Type"),
+              RenderMetricsObject(
+                manager: KonnexHandler.instance.manager,
+                id: 'addDeliveryButton',
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.to(() => AddressScreen(),
+                        transition: Transition.rightToLeft);
+                  },
+                  child: Text("Add Delivery Type"),
+                ),
               )
             ],
           ),
@@ -283,21 +307,25 @@ class _CartItem extends StatelessWidget {
             onTap: () {
               catalogProvider.deleteCartItem(product);
             },
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.delete,
-                    size: 18,
-                    color: Colors.black38,
-                  ),
-                  const SizedBox(
-                    width: 6,
-                  ),
-                  Text("Remove"),
-                ],
+            child: RenderMetricsObject(
+              manager: KonnexHandler.instance.manager,
+              id: '${this.index}RemoveButton',
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.delete,
+                      size: 18,
+                      color: Colors.black38,
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    Text("Remove"),
+                  ],
+                ),
               ),
             ),
           )
