@@ -67,7 +67,7 @@ class KonnexHandler {
           data.xCenter,
           data.yCenter - topPadding,
           Duration(milliseconds: instruction.waitInMils),
-          // color: Colors.red,
+          description: instruction.description,
           size: 30,
         ));
       } else if (instruction is InstructionByCoordinate) {
@@ -75,14 +75,15 @@ class KonnexHandler {
           instruction.x,
           instruction.y - topPadding,
           Duration(milliseconds: instruction.waitInMils),
-          // color: Colors.red,
+          description: instruction.description,
           size: 30,
         ));
       } else {
         throw UnimplementedError();
       }
     }
-    this._currInstructionSet.removeAt(0);
+    if (this._currInstructionSet.isNotEmpty)
+      this._currInstructionSet.removeAt(0);
   }
 
   /// Checks if the routing is skippable in such a manner

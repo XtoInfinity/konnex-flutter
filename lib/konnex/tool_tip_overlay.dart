@@ -3,6 +3,7 @@ part of 'konnex_handler.dart';
 class _ToolTipOverlay extends ModalRoute<void> {
   final double x;
   final double y;
+  final String description;
   final Duration wait;
   final double size;
   final Color color;
@@ -10,9 +11,10 @@ class _ToolTipOverlay extends ModalRoute<void> {
     this.x,
     this.y,
     this.wait, {
+    String description,
     this.size = 30,
     this.color = Colors.white,
-  });
+  }) : this.description = description ?? '';
 
   @override
   Duration get transitionDuration => Duration(milliseconds: 500);
@@ -50,6 +52,14 @@ class _ToolTipOverlay extends ModalRoute<void> {
 
   Widget _buildOverlayContent(BuildContext context) {
     this.popAfterWait(context);
+    final h = MediaQuery.of(context).size.height / 2;
+    double descriptionTop;
+    if (y < h) {
+      descriptionTop = y + 80;
+    } else {
+      descriptionTop = y - 80;
+    }
+
     return Stack(
       children: [
         Positioned(
@@ -59,7 +69,28 @@ class _ToolTipOverlay extends ModalRoute<void> {
             size: this.size,
             borderColor: this.color,
           ),
-        )
+        ),
+        if(this.description.isNotEmpty) Positioned(
+          left: 0,
+          right: 0,
+          top: descriptionTop,
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: Colors.black,
+                ),
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  this.description,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

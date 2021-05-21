@@ -15,7 +15,7 @@ class KonnexWidget extends StatefulWidget {
   final Color color;
 
   const KonnexWidget(
-      {Key key, @required this.currentRoute, this.color = Colors.transparent})
+      {Key key, @required this.currentRoute, this.color = Colors.white})
       : super(key: key);
 
   @override
