@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:konnex_aerothon/models/announcement.dart';
+import 'package:konnex_aerothon/services/help_service.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 
 class AnnouncementScreen extends StatelessWidget {
+  static const String routeName = '/AnnouncementScreen';
+
   final Announcement announcement;
 
-  AnnouncementScreen(this.announcement);
+  AnnouncementScreen(this.announcement) {
+    LogUtil.instance.log(routeName, LogType.open_screen, 'Opened $routeName');
+    HelpService().markAnnouncementAsSeen(this.announcement.id);
+  }
 
   @override
   Widget build(BuildContext context) {

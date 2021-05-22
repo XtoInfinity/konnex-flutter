@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/screens/catalog/category_screen.dart';
-import 'package:konnex_aerothon/utils/log_util.dart';
-import 'package:workmanager/workmanager.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   GetStorage box = GetStorage();
+  AnimationController _controller;
 
   getData() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -32,36 +32,49 @@ class _SplashScreenState extends State<SplashScreen> {
       "updatedAt": Timestamp.now(),
     });
 
-    /// Instantiate LogUtil
-    await LogUtil.ensureInitialised();
-
-    /// Register a periodic task
-    Workmanager().registerPeriodicTask(
-      'update-log',
-      'update-log',
-      frequency: Duration(days: 1),
-      initialDelay: Duration(minutes: 10),
-      existingWorkPolicy: ExistingWorkPolicy.replace,
-    );
-
     Get.offAll(CategoryScreen());
   }
 
   @override
   void initState() {
     super.initState();
+    this._controller = AnimationController(
+      vsync: this,
+      lowerBound: 0.5,
+      duration: Duration(seconds: 1),
+    )..repeat();
     getData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Icon(
-          Icons.wifi_tethering,
-          color: Theme.of(context).primaryColor,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: AnimatedBuilder(
+          animation: CurvedAnimation(
+              parent: this._controller, curve: Curves.fastOutSlowIn),
+          builder: (context, child) {
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                Icon(
+                  Icons.wifi_tethering,
+                  color: Theme.of(context).primaryColor,
+                  size: 70 * this._controller.value,
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
+  }
+
+  @override
+  dispose() {
+    this._controller.dispose();
+    super.dispose();
   }
 }

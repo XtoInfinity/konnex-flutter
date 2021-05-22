@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/config/constants.dart';
 import 'package:konnex_aerothon/konnex/konnex.dart';
 import 'package:konnex_aerothon/konnex/konnex_handler.dart';
@@ -31,7 +32,6 @@ class CategoryScreen extends StatelessWidget {
             catalogProvider.clearData();
             catalogProvider.selectedCategoryIndex = index;
             Get.to(() => ProductsScreen(), transition: Transition.rightToLeft);
-            LogUtil.instance.log('Selected ${category.ccName}');
           },
           child: Column(
             children: [
@@ -69,8 +69,7 @@ class CategoryScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         title: GestureDetector(
           onTap: () {
-            // pushNavigationsInFirestore();
-            LogUtil.instance.updateLogs();
+            GetStorage().write('seen-announcements', 'value');
           },
           child: Text(
             "Catalog",

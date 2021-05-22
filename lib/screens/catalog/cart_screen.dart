@@ -95,7 +95,8 @@ class CartScreen extends StatelessWidget {
                               positiveButtonOnTap: () {
                                 Get.close(1);
                                 Get.to(OrderConfirmedScreen());
-                                LogUtil.instance.log('Order made');
+                                LogUtil.instance.log(CartScreen.routeName,
+                                    LogType.order_item, 'Order made');
                               },
                             ));
                           }
@@ -201,14 +202,14 @@ class _CartItem extends StatelessWidget {
             catalogProvider.updateCartQuantity(
                 catalogProvider.cartProducts[index].quantity + 1,
                 catalogProvider.cartProducts[index]);
-            LogUtil.instance.log(
+            LogUtil.instance.log(CartScreen.routeName, LogType.alter_quantity,
                 'Added quantity for ${catalogProvider.cartProducts[index].officialId}');
           } else {
             if (catalogProvider.cartProducts[index].quantity != 1) {
               catalogProvider.updateCartQuantity(
                   catalogProvider.cartProducts[index].quantity - 1,
                   catalogProvider.cartProducts[index]);
-              LogUtil.instance.log(
+              LogUtil.instance.log(CartScreen.routeName, LogType.alter_quantity,
                   'Removed quantity for ${catalogProvider.cartProducts[index].officialId}');
             }
           }
@@ -312,7 +313,10 @@ class _CartItem extends StatelessWidget {
           InkWell(
             onTap: () {
               catalogProvider.deleteCartItem(product);
-              LogUtil.instance.log('Removed Product for ${product.officialId}');
+              LogUtil.instance.log(
+                  CartScreen.routeName,
+                  LogType.remove_from_cart,
+                  'Removed Product for ${product.officialId}');
             },
             child: RenderMetricsObject(
               manager: KonnexHandler.instance.manager,

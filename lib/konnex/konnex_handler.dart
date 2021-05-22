@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:render_metrics/render_metrics.dart';
@@ -55,14 +56,15 @@ class KonnexHandler {
     for (var i = 0; i < firstSet.length; i++) {
       final instruction = firstSet.elementAt(i);
       if (instruction == null) {
-        LogUtil.instance.log('instruction null: ${instruction.toString()}');
+        LogUtil.instance.log('konnex', LogType.error,
+            'instruction null: ${instruction.toString()}');
         continue;
       }
       if (instruction is InstructionById) {
         RenderData data = _renderManager.getRenderData(instruction.id);
         if (data == null) {
-          LogUtil.instance
-              ?.log('Instruction id not present: ${instruction.toString()}');
+          LogUtil.instance?.log('konnex', LogType.error,
+              'Instruction id not present: ${instruction.toString()}');
         }
         await Navigator.of(context).push(_ToolTipOverlay(
           data.xCenter,
@@ -118,5 +120,33 @@ class KonnexHandler {
     this._navObjects?.removeWhere((element) => element == null);
     print("${this._navObjects.toString()}");
     return this._navObjects;
+  }
+
+  /// Used to update all the elemets via navObjects
+  convertAndInsertElement() async {
+    Map<String, Set<String>> screenElements = {};
+    this._navObjects?.forEach((navObj) {
+      navObj.steps.forEach((steps) {
+        steps.instructions.forEach((instruction) {
+          if (instruction is InstructionById) {
+            if (!screenElements.containsKey(steps.uniqueRouteName)) {
+              screenElements[steps.uniqueRouteName] = {};
+            }
+            screenElements[steps.uniqueRouteName].add(instruction.id);
+          }
+        });
+      });
+    });
+    final String appId = GetStorage().read('appId');
+    final ref = FirebaseFirestore.instance.collection('elements');
+    final keys = screenElements.keys;
+    for (var i = 0; i < keys.length; i++) {
+      final routeName = keys.elementAt(i);
+      await ref.doc().set({
+        'appId': appId,
+        'elements': screenElements[routeName].toList(),
+        'screenName': routeName,
+      });
+    }
   }
 }

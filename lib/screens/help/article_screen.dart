@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:konnex_aerothon/models/article.dart';
+import 'package:konnex_aerothon/utils/log_util.dart';
 
 class ArticleScreen extends StatefulWidget {
+  static const String routeName = '/ArticleScreen';
   final Article article;
 
   ArticleScreen(this.article);
@@ -12,6 +14,13 @@ class ArticleScreen extends StatefulWidget {
 }
 
 class _ArticleScreenState extends State<ArticleScreen> {
+  @override
+  void initState() {
+    LogUtil.instance.log(ArticleScreen.routeName, LogType.open_screen,
+        'Opened ${ArticleScreen.routeName}');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  avatar_glow: ^1.2.0
   badges: ^1.2.0
   bubble: ^1.1.9+1
   build_runner: ^1.0.0
@@ -38,25 +39,25 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   flutter_spinkit: null
   flutter_staggered_animations: ^1.0.0
+  flutter_tts: ^3.1.0
+  fuzzywuzzy: ^0.1.6
   get: ^3.26.0
   get_storage: null
+  highlight_text: ^0.7.2
   image_cropper: null
   image_picker: ^0.7.4
   intl: ^0.17.0
   json_serializable: ^3.0.0
   lottie: ^1.0.1
   material_design_icons_flutter: ^4.0.5955
+  permission_handler: ^6.1.0
   photo_view: null
   provider: ^5.0.0
   render_metrics: ^2.0.0
   shimmer: ^1.1.2
   showcaseview: ^1.0.0
+  speech_to_text: null
   tflite_flutter: ^0.8.0
-  workmanager: ^0.4.0
-  speech_to_text:
-  permission_handler: ^6.1.0
-  highlight_text: ^0.7.2
-  avatar_glow: ^1.2.0
 
 dev_dependencies:
   flutter_test:

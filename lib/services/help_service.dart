@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/models/announcement.dart';
 import 'package:konnex_aerothon/models/article.dart';
-import 'package:konnex_aerothon/models/message.dart';
 import 'package:konnex_aerothon/utils/classifier.dart';
 
 class HelpService {
@@ -55,7 +54,8 @@ class HelpService {
       "subCategory": subCategory,
       "message": message,
       "createdAt": Timestamp.now(),
-      "images": urls
+      "images": urls,
+      "status": "Open",
     });
   }
 
@@ -69,5 +69,42 @@ class HelpService {
       "createdAt": Timestamp.now(),
       "sentiment": sentiment,
     });
+  }
+
+  bool isAnnouncementSeen(String id) {
+    List<String> seenAnnouncements;
+    seenAnnouncements = this.seenIdList();
+    return seenAnnouncements?.any((element) => element == id) ?? false;
+  }
+
+  markAnnouncementAsSeen(String id) async {
+    List<String> seenAnnouncements = [];
+    try {
+      seenAnnouncements = this.seenIdList();
+      bool isAlreadySeen = isAnnouncementSeen(id);
+      if (!isAlreadySeen) {
+        seenAnnouncements.add(id);
+        GetStorage().write('seen-announcements', seenAnnouncements);
+
+        final res =
+            await FirebaseFirestore.instance.doc("anouncement/$id").get();
+        if (res.exists) {
+          int views = (res.data()['views'] as int);
+          await FirebaseFirestore.instance
+              .doc("anouncement/$id")
+              .set({'views': views + 1}, SetOptions(merge: true));
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  List<String> seenIdList() {
+    final d = GetStorage().read('seen-announcements');
+    if (d != null && d is List) {
+      return d.map((e) => e.toString()).toList();
+    } else
+      return [];
   }
 }

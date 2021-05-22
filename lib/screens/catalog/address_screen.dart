@@ -54,8 +54,10 @@ class _AddressScreenState extends State<AddressScreen> {
                           onTap: () {
                             catalogProvider.selectedAddressId = 0;
                             catalogProvider.notify();
-                            LogUtil.instance
-                                .log('Selected Pickup as delivery option');
+                            LogUtil.instance.log(
+                                AddAddressScreen.routeName,
+                                LogType.toggle_address,
+                                'Selected Pickup as delivery option');
                           },
                           child: Card(
                             child: PickupSection(() {
@@ -89,6 +91,8 @@ class _AddressScreenState extends State<AddressScreen> {
                                         userAddress.addressId;
                                     catalogProvider.notify();
                                     LogUtil.instance.log(
+                                        AddAddressScreen.routeName,
+                                        LogType.toggle_address,
                                         'Chose personal Address for delivery.');
                                   },
                                       userAddress.addressId,
@@ -98,8 +102,6 @@ class _AddressScreenState extends State<AddressScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  LogUtil.instance
-                                      .log('Opened add address screen');
                                   Get.to(() => AddAddressScreen(),
                                       transition: Transition.rightToLeft);
                                 },

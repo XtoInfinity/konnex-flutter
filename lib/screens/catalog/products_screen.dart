@@ -116,32 +116,34 @@ class ProductsScreen extends StatelessWidget {
                           const SizedBox(
                             height: 4,
                           ),
-                          Container(
-                            width: double.infinity,
-                            child: product.quantity == null
-                                ? RenderMetricsObject(
-                                    manager: KonnexHandler.instance.manager,
-                                    id: '${index}AddToCart',
-                                    child: ElevatedButton(
+                          RenderMetricsObject(
+                            manager: KonnexHandler.instance.manager,
+                            id: '${index}AddToCart',
+                            child: Container(
+                              width: double.infinity,
+                              child: product.quantity == null
+                                  ? ElevatedButton(
                                       onPressed: () {
                                         catalogProvider
                                             .addItemToCart(product.cpId);
                                         LogUtil.instance.log(
-                                            'Added product to cart ${product.officialId}');
+                                            routeName,
+                                            LogType.add_to_cart,
+                                            '${product.officialId}');
                                       },
                                       child: Text("Add to Cart"),
+                                    )
+                                  : ElevatedButton(
+                                      onPressed: () {
+                                        Get.to(() => CartScreen(),
+                                            transition: Transition.rightToLeft);
+                                      },
+                                      child: Text("Item in Cart"),
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.white,
+                                          onPrimary: Get.theme.primaryColor),
                                     ),
-                                  )
-                                : ElevatedButton(
-                                    onPressed: () {
-                                      Get.to(() => CartScreen(),
-                                          transition: Transition.rightToLeft);
-                                    },
-                                    child: Text("Item in Cart"),
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.white,
-                                        onPrimary: Get.theme.primaryColor),
-                                  ),
+                            ),
                           )
                         ],
                       ),
