@@ -2,7 +2,6 @@ part of 'konnex.dart';
 
 class _KonnexBodyOverlay extends ModalRoute<void> {
   final String routeName;
-
   _KonnexBodyOverlay(this.routeName);
 
   @override
@@ -75,6 +74,13 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
             children: [
               _getSearchBox(),
               _getChipSection(),
+              AnnouncementSection(
+                removeSeen: true,
+                onTap: (announcement) {
+                  Navigator.of(context).pop();
+                  Get.to(() => AnnouncementScreen(announcement));
+                },
+              ),
               Expanded(
                 child: _NavigationOptionWidget(
                   filter: controller.text,

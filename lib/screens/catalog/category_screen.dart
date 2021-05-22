@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/config/constants.dart';
 import 'package:konnex_aerothon/konnex/konnex.dart';
 import 'package:konnex_aerothon/konnex/konnex_handler.dart';
@@ -66,10 +67,15 @@ class CategoryScreen extends StatelessWidget {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         backgroundColor: Colors.white,
-        title: Text(
-          "Catalog",
-          style: TextStyle(
-            color: Get.theme.primaryColor,
+        title: GestureDetector(
+          onTap: () {
+            GetStorage().write('seen-announcements', 'value');
+          },
+          child: Text(
+            "Catalog",
+            style: TextStyle(
+              color: Get.theme.primaryColor,
+            ),
           ),
         ),
         actions: [

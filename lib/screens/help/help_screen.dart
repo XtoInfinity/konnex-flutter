@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:konnex_aerothon/models/announcement.dart';
 import 'package:konnex_aerothon/models/article.dart';
-import 'package:konnex_aerothon/screens/help/announcement_screen.dart';
 import 'package:konnex_aerothon/screens/help/feedback_screen.dart';
 import 'package:konnex_aerothon/screens/help/article_screen.dart';
 import 'package:konnex_aerothon/screens/messaging/message_screen.dart';
@@ -12,6 +10,7 @@ import 'package:konnex_aerothon/screens/report/report_screen.dart';
 import 'package:konnex_aerothon/services/help_service.dart';
 import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/utils/speech_overlay.dart';
+import 'package:konnex_aerothon/widgets/announcement_section.dart';
 
 class HelpScreen extends StatefulWidget {
   static const String routeName = '/HelpScreen';
@@ -211,7 +210,7 @@ class _HelpScreenState extends State<HelpScreen> {
                           TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                     ),
                   ),
-                  _AnnouncementSection(),
+                  AnnouncementSection(),
                   Container(
                     margin: EdgeInsets.only(bottom: 12),
                     child: Text(
@@ -282,55 +281,6 @@ class _ArticleSection extends StatelessWidget {
         }
       },
       stream: FirebaseFirestore.instance.collection("article").snapshots(),
-    );
-  }
-}
-
-class _AnnouncementSection extends StatelessWidget {
-  announcementWidget(Announcement announcement) {
-    return InkWell(
-      onTap: () {
-        Get.to(AnnouncementScreen(announcement));
-      },
-      child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          clipBehavior: Clip.hardEdge,
-          width: Get.width * 0.8,
-          height: double.infinity,
-          margin: EdgeInsets.only(right: 16),
-          child: Image.network(
-            announcement.image,
-            fit: BoxFit.cover,
-          )),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    HelpService helpService = HelpService();
-    List<Announcement> announcements = [];
-
-    return StreamBuilder(
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          helpService.getAllAnnouncements(snapshot, announcements);
-          return Container(
-            height: 150,
-            padding: EdgeInsets.only(top: 0, bottom: 16),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) =>
-                  announcementWidget(announcements[index]),
-              itemCount: announcements.length,
-            ),
-          );
-        } else {
-          return SizedBox.shrink();
-        }
-      },
-      stream: FirebaseFirestore.instance.collection("announcement").snapshots(),
     );
   }
 }

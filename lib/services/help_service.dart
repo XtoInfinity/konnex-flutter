@@ -70,4 +70,41 @@ class HelpService {
       "sentiment": sentiment,
     });
   }
+
+  bool isAnnouncementSeen(String id) {
+    List<String> seenAnnouncements;
+    seenAnnouncements = this.seenIdList();
+    return seenAnnouncements?.any((element) => element == id) ?? false;
+  }
+
+  markAnnouncementAsSeen(String id) async {
+    List<String> seenAnnouncements = [];
+    try {
+      seenAnnouncements = this.seenIdList();
+      bool isAlreadySeen = isAnnouncementSeen(id);
+      if (!isAlreadySeen) {
+        seenAnnouncements.add(id);
+        GetStorage().write('seen-announcements', seenAnnouncements);
+
+        final res =
+            await FirebaseFirestore.instance.doc("anouncement/$id").get();
+        if (res.exists) {
+          int views = (res.data()['views'] as int);
+          await FirebaseFirestore.instance
+              .doc("anouncement/$id")
+              .set({'views': views + 1}, SetOptions(merge: true));
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  List<String> seenIdList() {
+    final d = GetStorage().read('seen-announcements');
+    if (d != null && d is List) {
+      return d.map((e) => e.toString()).toList();
+    } else
+      return [];
+  }
 }
