@@ -45,8 +45,8 @@ class _KonnexWidgetState extends State<KonnexWidget> {
     this.isOpen = false;
     this.allAnnouncements = [];
 
-    this.updateAnnouncementCount();
-    this.listenToSeenAnnouncement();
+    // this.updateAnnouncementCount();
+    // this.listenToSeenAnnouncement();
 
     LogUtil.instance.log(this.widget.currentRoute, LogType.open_screen,
         'Opened ${this.widget.currentRoute}');
@@ -54,51 +54,51 @@ class _KonnexWidgetState extends State<KonnexWidget> {
     super.initState();
   }
 
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> get unSeenAnnouncements {
-    final announcements = this.allAnnouncements;
-    announcements.retainWhere((element) {
-      final Map<String, dynamic> data = element.data();
-      return !HelpService().isAnnouncementSeen(data['id']);
-    });
-    return announcements;
-  }
+  // List<QueryDocumentSnapshot<Map<String, dynamic>>> get unSeenAnnouncements {
+  //   final announcements = this.allAnnouncements;
+  //   announcements.retainWhere((element) {
+  //     final Map<String, dynamic> data = element.data();
+  //     return !HelpService().isAnnouncementSeen(data['id']);
+  //   });
+  //   return announcements;
+  // }
 
-  updateAnnouncementCount() {
-    this.annStreamSubscription = FirebaseFirestore.instance
-        .collection("announcement")
-        .snapshots()
-        .listen((event) {
-      try {
-        if (event?.docs?.isNotEmpty ?? false) {
-          String appId = GetStorage().read('appId');
-          final list = event.docs.toList();
-          list.retainWhere((element) => element.data()['appId'] == appId);
-          this.allAnnouncements = list;
-          if (this.mounted) {
-            setState(() {});
-          }
-        }
-      } catch (e) {
-        LogUtil.instance
-            .log('konnex', LogType.error, 'Error listening to stream.');
-      }
-    });
-  }
+  // updateAnnouncementCount() {
+  //   this.annStreamSubscription = FirebaseFirestore.instance
+  //       .collection("announcement")
+  //       .snapshots()
+  //       .listen((event) {
+  //     try {
+  //       if (event?.docs?.isNotEmpty ?? false) {
+  //         String appId = GetStorage().read('appId');
+  //         final list = event.docs.toList();
+  //         list.retainWhere((element) => element.data()['appId'] == appId);
+  //         this.allAnnouncements = list;
+  //         if (this.mounted) {
+  //           setState(() {});
+  //         }
+  //       }
+  //     } catch (e) {
+  //       LogUtil.instance
+  //           .log('konnex', LogType.error, 'Error listening to stream.');
+  //     }
+  //   });
+  // }
 
-  listenToSeenAnnouncement() {
-    GetStorage().listenKey('seen-announcements', (data) {
-      if (this.mounted) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          setState(() {});
-        });
-      }
-    });
-  }
+  // listenToSeenAnnouncement() {
+  //   GetStorage().listenKey('seen-announcements', (data) {
+  //     if (this.mounted) {
+  //       WidgetsBinding.instance.addPostFrameCallback((_) {
+  //         setState(() {});
+  //       });
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     /// Resume any tooltip navigation if present
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       KonnexHandler.instance.resumeToolTipNavIfAny(
         context,
         this.widget.currentRoute,
@@ -113,13 +113,14 @@ class _KonnexWidgetState extends State<KonnexWidget> {
           this.onToggle();
         },
         child: Badge(
-          showBadge: (!this.isOpen && this.unSeenAnnouncements.isNotEmpty),
-          badgeContent: Text(
-            '${this.unSeenAnnouncements.length}',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
+          showBadge:
+              false, // (!this.isOpen && this.unSeenAnnouncements.isNotEmpty),
+          // badgeContent: Text(
+          //   '${this.unSeenAnnouncements.length}',
+          //   style: TextStyle(
+          //     color: Colors.white,
+          //   ),
+          // ),
           child: Image.asset(
             "assets/images/logo.png",
             height: 60,

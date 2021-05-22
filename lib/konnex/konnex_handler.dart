@@ -28,7 +28,6 @@ class KonnexHandler {
   void startToolTipNavigation(
       String routeName, List<InstructionSet> setOfInstructions) {
     this._currInstructionSet = setOfInstructions;
-    // this.resumeToolTipNavIfAny(context, routeName);
   }
 
   Future<void> resumeToolTipNavIfAny(
@@ -65,14 +64,15 @@ class KonnexHandler {
         if (data == null) {
           LogUtil.instance?.log('konnex', LogType.error,
               'Instruction id not present: ${instruction.toString()}');
+        } else {
+          await Navigator.of(context).push(_ToolTipOverlay(
+            data.xCenter,
+            data.yCenter - topPadding,
+            Duration(milliseconds: instruction.waitInMils),
+            description: instruction.description,
+            size: 30,
+          ));
         }
-        await Navigator.of(context).push(_ToolTipOverlay(
-          data.xCenter,
-          data.yCenter - topPadding,
-          Duration(milliseconds: instruction.waitInMils),
-          description: instruction.description,
-          size: 30,
-        ));
       } else if (instruction is InstructionByCoordinate) {
         await Navigator.of(context).push(_ToolTipOverlay(
           instruction.x,

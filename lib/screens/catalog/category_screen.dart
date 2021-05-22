@@ -69,6 +69,7 @@ class CategoryScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         title: GestureDetector(
           onTap: () {
+            // pushNavigationsInFirestore();
             GetStorage().write('seen-announcements', 'value');
           },
           child: Text(
