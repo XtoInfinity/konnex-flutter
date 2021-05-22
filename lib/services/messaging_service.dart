@@ -9,31 +9,19 @@ class MessagingService {
 
   getAllMessage(AsyncSnapshot<QuerySnapshot> snapshot, List<Message> messages) {
     messages.clear();
+    String convoId;
     snapshot.data.docs.map((e) {
       if (e.get('user') == userId) {
-        messages.add(Message.fromJson(e.data()));
+        convoId = e.get('convoId');
       }
     }).toList();
-  }
-
-  addMessage(String message, List<Message> messages) {
-    if (messages.length == 0) {
-      String id = MiscUtils.getRandomId(6);
-      FirebaseFirestore.instance.collection('messaging').add({
-        'user': userId,
-        "time": Timestamp.now(),
-        "sentBy": "user",
-        "message": message,
-        "convoId": id
-      });
-    } else {
-      FirebaseFirestore.instance.collection('messaging').add({
-        'user': userId,
-        "time": Timestamp.now(),
-        "sentBy": "user",
-        "message": message,
-        "convoId": messages.first.convoId
-      });
+    if (convoId != null) {
+      snapshot.data.docs.map((e) {
+        if (e.get('convoId') == convoId) {
+          messages.add(Message.fromJson(e.data()));
+        }
+      }).toList();
+      messages.sort((a, b) => b.time.compareTo(a.time));
     }
   }
 }

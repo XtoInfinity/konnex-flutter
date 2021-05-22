@@ -58,11 +58,17 @@ dependencies:
   showcaseview: ^1.0.0
   speech_to_text: null
   tflite_flutter: ^0.8.0
+  dio:
 
+  draggable_fab: ^0.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.9.0"
 
+flutter_icons:
+  android: "launcher_icon"
+  image_path: "assets/images/logo.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.

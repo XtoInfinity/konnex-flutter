@@ -13,12 +13,19 @@ class HelpService {
   String appId = GetStorage().read('appId');
   Classifier _classifier = Classifier();
 
-  getAllArticles(
-      AsyncSnapshot<QuerySnapshot> snapshot, List<Article> articles) async {
+  getAllArticles(AsyncSnapshot<QuerySnapshot> snapshot, List<Article> articles,
+      String text) async {
     articles.clear();
     snapshot.data.docs.map((e) {
       if (e.get('appId') == appId) {
-        articles.add(Article.fromJson(e.data()));
+        if (text.length > 0) {
+          Article article = Article.fromJson(e.data());
+          if (article.title.toLowerCase().contains(text.toLowerCase())) {
+            articles.add(Article.fromJson(e.data()));
+          }
+        } else {
+          articles.add(Article.fromJson(e.data()));
+        }
       }
     }).toList();
   }

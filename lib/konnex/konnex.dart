@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:draggable_fab/draggable_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
@@ -107,7 +108,7 @@ class _KonnexWidgetState extends State<KonnexWidget> {
 
     return Visibility(
       visible: !this.isOpen,
-      child: FloatingActionButton(
+      child: DraggableFab(child: FloatingActionButton(
         backgroundColor: widget.color,
         onPressed: () {
           this.onToggle();
@@ -115,7 +116,7 @@ class _KonnexWidgetState extends State<KonnexWidget> {
         child: Badge(
           showBadge:
               false, // (!this.isOpen && this.unSeenAnnouncements.isNotEmpty),
-          // badgeContent: Text(
+            // badgeContent: Text(
           //   '${this.unSeenAnnouncements.length}',
           //   style: TextStyle(
           //     color: Colors.white,
@@ -123,7 +124,7 @@ class _KonnexWidgetState extends State<KonnexWidget> {
           // ),
           child: Image.asset(
             "assets/images/logo.png",
-            height: 60,
+            height: 60,),
           ),
         ),
       ),
