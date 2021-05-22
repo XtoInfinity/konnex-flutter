@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:konnex_aerothon/models/message.dart';
 import 'package:konnex_aerothon/services/messaging_service.dart';
 import 'package:konnex_aerothon/utils/log_util.dart';
+import 'package:konnex_aerothon/utils/misc_utils.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 
 class MessageScreen extends StatefulWidget {
@@ -47,24 +48,24 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   addMessage(String message, List<Message> messages) async {
-    // if (messages.length == 0) {
-    //   String id = MiscUtils.getRandomId(6);
-    //   await FirebaseFirestore.instance.collection('messaging').add({
-    //     'user': userId,
-    //     "time": Timestamp.now(),
-    //     "sentBy": "user",
-    //     "message": message,
-    //     "convoId": id
-    //   });
-    // } else {
-    //   await FirebaseFirestore.instance.collection('messaging').add({
-    //     'user': userId,
-    //     "time": Timestamp.now(),
-    //     "sentBy": "user",
-    //     "message": message,
-    //     "convoId": messages.first.convoId
-    //   });
-    // }
+    if (messages.length == 0) {
+      String id = MiscUtils.getRandomId(6);
+      await FirebaseFirestore.instance.collection('messaging').add({
+        'user': userId,
+        "time": Timestamp.now(),
+        "sentBy": "user",
+        "message": message,
+        "convoId": id
+      });
+    } else {
+      await FirebaseFirestore.instance.collection('messaging').add({
+        'user': userId,
+        "time": Timestamp.now(),
+        "sentBy": "user",
+        "message": message,
+        "convoId": messages.first.convoId
+      });
+    }
     Dio dio = Dio();
     try {
       final response = await dio.get(
@@ -72,21 +73,24 @@ class _MessageScreenState extends State<MessageScreen> {
       );
       print(response);
     } on DioError catch (error) {}
-    // String tag = "greeting";
-    // String chatbotMessage =
-    //     "We connected you with our support with. The representative will get back to you soon.";
-    // chatbotMessages.map((e) {
-    //   if (e.tag == tag) {
-    //     chatbotMessage = e.message;
-    //   }
-    // }).toList();
-    // await FirebaseFirestore.instance.collection('messaging').add({
-    //   'user': "chatbot",
-    //   "time": Timestamp.now(),
-    //   "sentBy": "chatbot",
-    //   "message": chatbotMessage,
-    //   "convoId": messages.first.convoId
-    // });
+    String tag;
+
+    String chatbotMessage =
+        "We connected you with our support with. The representative will get back to you soon.";
+    chatbotMessages.map((e) {
+      if (e.tag == tag) {
+        chatbotMessage = e.message;
+      }
+    }).toList();
+    Future.delayed(Duration(seconds: 2), () async {
+      await FirebaseFirestore.instance.collection('messaging').add({
+        'user': "chatbot",
+        "time": Timestamp.now(),
+        "sentBy": "chatbot",
+        "message": chatbotMessage,
+        "convoId": messages.first.convoId
+      });
+    });
   }
 
   @override

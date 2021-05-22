@@ -219,14 +219,17 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
         ),
         InkWell(
           onTap: () async {
+            controller.clear();
+            setState(() {});
             String textFromSpeech = await Get.dialog(
               SpeechOverlay(),
             );
             if (textFromSpeech != null) {
               controller.text = textFromSpeech;
+              setState(() {});
+
               LogUtil.instance
                   .log('konnex', LogType.search_navigation, '$textFromSpeech');
-              setState(() {});
             }
           },
           child: Container(
