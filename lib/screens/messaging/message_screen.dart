@@ -1,5 +1,6 @@
 import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -47,39 +48,46 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   addMessage(String message, List<Message> messages) async {
-    if (messages.length == 0) {
-      String id = MiscUtils.getRandomId(6);
-      await FirebaseFirestore.instance.collection('messaging').add({
-        'user': userId,
-        "time": Timestamp.now(),
-        "sentBy": "user",
-        "message": message,
-        "convoId": id
-      });
-    } else {
-      await FirebaseFirestore.instance.collection('messaging').add({
-        'user': userId,
-        "time": Timestamp.now(),
-        "sentBy": "user",
-        "message": message,
-        "convoId": messages.first.convoId
-      });
-    }
-    String tag = "greeting";
-    String chatbotMessage =
-        "We connected you with our support with. The representative will get back to you soon.";
-    chatbotMessages.map((e) {
-      if (e.tag == tag) {
-        chatbotMessage = e.message;
-      }
-    }).toList();
-    await FirebaseFirestore.instance.collection('messaging').add({
-      'user': "chatbot",
-      "time": Timestamp.now(),
-      "sentBy": "chatbot",
-      "message": chatbotMessage,
-      "convoId": messages.first.convoId
-    });
+    // if (messages.length == 0) {
+    //   String id = MiscUtils.getRandomId(6);
+    //   await FirebaseFirestore.instance.collection('messaging').add({
+    //     'user': userId,
+    //     "time": Timestamp.now(),
+    //     "sentBy": "user",
+    //     "message": message,
+    //     "convoId": id
+    //   });
+    // } else {
+    //   await FirebaseFirestore.instance.collection('messaging').add({
+    //     'user': userId,
+    //     "time": Timestamp.now(),
+    //     "sentBy": "user",
+    //     "message": message,
+    //     "convoId": messages.first.convoId
+    //   });
+    // }
+    Dio dio = Dio();
+    try {
+      final response = await dio.get(
+        "http://ec2-13-234-31-180.ap-south-1.compute.amazonaws.com/api/chatbot/response?question=~${message}~",
+      );
+      print(response);
+    } on DioError catch (error) {}
+    // String tag = "greeting";
+    // String chatbotMessage =
+    //     "We connected you with our support with. The representative will get back to you soon.";
+    // chatbotMessages.map((e) {
+    //   if (e.tag == tag) {
+    //     chatbotMessage = e.message;
+    //   }
+    // }).toList();
+    // await FirebaseFirestore.instance.collection('messaging').add({
+    //   'user': "chatbot",
+    //   "time": Timestamp.now(),
+    //   "sentBy": "chatbot",
+    //   "message": chatbotMessage,
+    //   "convoId": messages.first.convoId
+    // });
   }
 
   @override
