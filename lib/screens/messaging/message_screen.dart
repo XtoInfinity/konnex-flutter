@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:konnex_aerothon/models/message.dart';
 import 'package:konnex_aerothon/services/messaging_service.dart';
 import 'package:konnex_aerothon/utils/log_util.dart';
-import 'package:konnex_aerothon/utils/misc_utils.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 
 class MessageScreen extends StatefulWidget {

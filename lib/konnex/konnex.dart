@@ -6,12 +6,9 @@ import 'package:draggable_fab/draggable_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/konnex/konnex_handler.dart';
-import 'package:konnex_aerothon/models/announcement.dart';
 import 'package:konnex_aerothon/screens/help/announcement_screen.dart';
 import 'package:konnex_aerothon/screens/help/help_screen.dart';
-import 'package:konnex_aerothon/services/help_service.dart';
 import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/screens/playwin/play_screen.dart';
 import 'package:konnex_aerothon/utils/speech_overlay.dart';
@@ -108,23 +105,25 @@ class _KonnexWidgetState extends State<KonnexWidget> {
 
     return Visibility(
       visible: !this.isOpen,
-      child: DraggableFab(child: FloatingActionButton(
-        backgroundColor: widget.color,
-        onPressed: () {
-          this.onToggle();
-        },
-        child: Badge(
-          showBadge:
-              false, // (!this.isOpen && this.unSeenAnnouncements.isNotEmpty),
+      child: DraggableFab(
+        child: FloatingActionButton(
+          backgroundColor: widget.color,
+          onPressed: () {
+            this.onToggle();
+          },
+          child: Badge(
+            showBadge:
+                false, // (!this.isOpen && this.unSeenAnnouncements.isNotEmpty),
             // badgeContent: Text(
-          //   '${this.unSeenAnnouncements.length}',
-          //   style: TextStyle(
-          //     color: Colors.white,
-          //   ),
-          // ),
-          child: Image.asset(
-            "assets/images/logo.png",
-            height: 60,),
+            //   '${this.unSeenAnnouncements.length}',
+            //   style: TextStyle(
+            //     color: Colors.white,
+            //   ),
+            // ),
+            child: Image.asset(
+              "assets/images/logo.png",
+              height: 60,
+            ),
           ),
         ),
       ),

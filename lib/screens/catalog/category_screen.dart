@@ -1,17 +1,14 @@
 import 'package:badges/badges.dart';
-import 'package:draggable_fab/draggable_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:konnex_aerothon/config/constants.dart';
 import 'package:konnex_aerothon/konnex/konnex.dart';
 import 'package:konnex_aerothon/konnex/konnex_handler.dart';
-import 'package:konnex_aerothon/konnex/models/instruction_set.dart';
 import 'package:konnex_aerothon/models/catalog.dart';
 import 'package:konnex_aerothon/providers/catalog_provider.dart';
 import 'package:konnex_aerothon/screens/catalog/cart_screen.dart';
 import 'package:konnex_aerothon/screens/catalog/products_screen.dart';
-import 'package:konnex_aerothon/utils/log_util.dart';
 import 'package:konnex_aerothon/widgets/custom_network_image.dart';
 import 'package:konnex_aerothon/widgets/loading.dart';
 import 'package:provider/provider.dart';
