@@ -275,6 +275,7 @@ class _NavigationOptionWidget extends StatelessWidget {
           return AnimationLimiter(
             child: ListView.builder(
               itemCount: navObjects.length,
+              padding: EdgeInsets.only(bottom: 40),
               itemBuilder: (context, index) {
                 final navObject = navObjects.elementAt(index);
                 return AnimationConfiguration.staggeredList(
