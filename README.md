@@ -19,7 +19,7 @@ Be it speech enabled navigation guide, or Chat bots to help users with basic que
 
 ## Installation
 
-konnex requires [Flutter](https://flutter.dev/docs/get-started/install) to run.
+konnex requires [Flutter](https://flutter.dev/docs/get-started/install) to run
 
 Get the packages
 
