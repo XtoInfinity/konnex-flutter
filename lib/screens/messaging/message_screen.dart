@@ -18,6 +18,9 @@ class _MessageScreenState extends State<MessageScreen> {
   TextEditingController _messageController;
   MessagingService messagingService = MessagingService();
 
+  List<Chatbot> chatbotMessages = [];
+  List<Message> messages = [];
+
   @override
   void initState() {
     super.initState();
@@ -29,8 +32,6 @@ class _MessageScreenState extends State<MessageScreen> {
     _messageController.dispose();
     super.dispose();
   }
-
-  List<Message> messages = [];
 
   @override
   Widget build(BuildContext context) {

@@ -14,3 +14,13 @@ class Message {
       sentBy: json['sentBy'],
       time: json['time']);
 }
+
+class Chatbot {
+  String message;
+  String tag;
+
+  Chatbot({this.message, this.tag});
+
+  factory Chatbot.fromJson(Map<String, dynamic> json) =>
+      Chatbot(message: json['message'], tag: json['tag']);
+}

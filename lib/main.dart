@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         defaultTransition: Transition.cupertino,
-        home: HelpScreen(),
+        home: SplashScreen(),
       ),
     );
   }
