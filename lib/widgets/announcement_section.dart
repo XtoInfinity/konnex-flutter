@@ -15,7 +15,7 @@ class AnnouncementSection extends StatelessWidget {
   announcementWidget(Announcement announcement) {
     return InkWell(
       onTap: () {
-        if (this.onTap == null) {
+        if (this.onTap != null) {
           this.onTap.call(announcement);
         }
         Get.to(AnnouncementScreen(announcement));

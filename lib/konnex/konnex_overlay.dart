@@ -206,6 +206,9 @@ class __KonnexBodyWidgetState extends State<_KonnexBodyWidget> {
                         onSubmitted: (val) {
                           setState(() {});
                         },
+                        onChanged: (val) {
+                          setState(() {});
+                        },
                       ),
                     ),
                   ),

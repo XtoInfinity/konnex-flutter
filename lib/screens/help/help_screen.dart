@@ -49,7 +49,9 @@ class _HelpScreenState extends State<HelpScreen> {
                             hintText: "Enter your issue"),
                         textInputAction: TextInputAction.search,
                         controller: controller,
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          setState(() {});
+                        },
                         onSubmitted: (val) {},
                       ),
                     ),
@@ -142,84 +144,95 @@ class _HelpScreenState extends State<HelpScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   issueWidget(),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
-                      "Need more help?",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                    ),
-                  ),
-                  Card(
-                    child: InkWell(
-                      onTap: () {
-                        Get.to(MessageScreen());
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 0.5),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        child: Row(
+                  controller.text.length > 0
+                      ? _ArticleSection(controller.text)
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.message,
-                              color: Theme.of(context).primaryColor,
-                              size: 30,
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 12),
+                              child: Text(
+                                "Need more help?",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 16),
+                              ),
                             ),
-                            SizedBox(
-                              width: 16,
+                            Card(
+                              child: InkWell(
+                                onTap: () {
+                                  Get.to(MessageScreen());
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.grey, width: 0.5),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 16),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.message,
+                                        color: Theme.of(context).primaryColor,
+                                        size: 30,
+                                      ),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Contact Us"),
+                                          Text(
+                                              "Tell us more and we'll help you get there")
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Contact Us"),
-                                Text(
-                                    "Tell us more and we'll help you get there")
-                              ],
-                            )
+                            Container(
+                              margin: EdgeInsets.only(top: 16),
+                              height: 0.5,
+                              color: Colors.grey,
+                            ),
+                            feedbackWidget(
+                                "Send Feedback",
+                                Icons.announcement_rounded,
+                                () => Get.to(FeedbackScreen())),
+                            Container(
+                              height: 0.5,
+                              color: Colors.grey,
+                            ),
+                            feedbackWidget("Report a Bug", Icons.bug_report,
+                                () => Get.to(ReportScreen())),
+                            Container(
+                              height: 0.5,
+                              color: Colors.grey,
+                              margin: EdgeInsets.only(bottom: 16),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 12),
+                              child: Text(
+                                "Announcements",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 16),
+                              ),
+                            ),
+                            AnnouncementSection(),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 12),
+                              child: Text(
+                                "Popular Articles",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 16),
+                              ),
+                            ),
+                            _ArticleSection(controller.text)
                           ],
                         ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 16),
-                    height: 0.5,
-                    color: Colors.grey,
-                  ),
-                  feedbackWidget("Send Feedback", Icons.announcement_rounded,
-                      () => Get.to(FeedbackScreen())),
-                  Container(
-                    height: 0.5,
-                    color: Colors.grey,
-                  ),
-                  feedbackWidget("Report a Bug", Icons.bug_report,
-                      () => Get.to(ReportScreen())),
-                  Container(
-                    height: 0.5,
-                    color: Colors.grey,
-                    margin: EdgeInsets.only(bottom: 16),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 12),
-                    child: Text(
-                      "Announcements",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                    ),
-                  ),
-                  AnnouncementSection(),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 12),
-                    child: Text(
-                      "Popular Articles",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                    ),
-                  ),
-                  _ArticleSection()
                 ],
               ),
             ),
@@ -231,6 +244,9 @@ class _HelpScreenState extends State<HelpScreen> {
 }
 
 class _ArticleSection extends StatelessWidget {
+  final String searchVal;
+  _ArticleSection(this.searchVal);
+
   articleWidget(Article article, IconData iconData) {
     return InkWell(
       onTap: () {
@@ -268,7 +284,7 @@ class _ArticleSection extends StatelessWidget {
     return StreamBuilder(
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          helpService.getAllArticles(snapshot, articles);
+          helpService.getAllArticles(snapshot, articles, searchVal);
           return ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),

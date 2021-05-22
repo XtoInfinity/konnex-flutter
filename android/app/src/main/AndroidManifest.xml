@@ -18,7 +18,7 @@
         android:label="konnex_aerothon"
        android:usesCleartextTraffic="true"
 
-       android:icon="@mipmap/ic_launcher">
+       android:icon="@mipmap/launcher_icon">
        <activity
            android:name="com.yalantis.ucrop.UCropActivity"
            android:screenOrientation="portrait"
